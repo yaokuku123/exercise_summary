@@ -36,3 +36,8 @@ if __name__ == '__main__':
     # 3.启动子进程
     sub_process_music.start()
     sub_process_speak.start()
+
+    # 4.获取子进程的信息
+    print('sub_process_music pid: %s' % sub_process_music.pid)
+    print('sub_process_music name: %s' % sub_process_music.name)
+    print('sub_process_music is_alive: %s' % sub_process_music.is_alive())  # True，当主进程调用join()方法后，该子进程消亡变为False
