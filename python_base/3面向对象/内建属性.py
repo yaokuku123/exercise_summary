@@ -45,6 +45,15 @@ class Student(object):
     def __delitem__(self, key):
         del self.study_classes[key]
 
+    # 若获取该类不存在的属性时，调用__getattr__方法
+    # 若该类重写了__getattribute__则不调用该方法，优先级低
+    def __getattr__(self, item):
+        print('getattr...')
+        if item == 'testgetattr':
+            return 'testgetattr_val'
+        else:
+            return super().__getattribute__(item)
+
 
 if __name__ == '__main__':
     student = Student('yorick', 25)
