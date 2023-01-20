@@ -62,7 +62,7 @@ class StudentManager(object):
     def save_data(self):
         try:
             # 注意编码格式
-            f = open('./save_student.txt', 'w', encoding='utf-8')
+            f = open('save_student.txt', 'w', encoding='utf-8')
             # 将列表中的对象类型转换为字典类型，存储至文件中
             students = [student.__dict__ for student in self.students]
             f.write(str(students))
@@ -76,7 +76,7 @@ class StudentManager(object):
     # 私有方法
     def __load_data(self):
         try:
-            f = open('./save_student.txt', 'r', encoding='utf-8')
+            f = open('save_student.txt', 'r', encoding='utf-8')
             # 转换字符串类型的列表为python的列表
             students = eval(f.read())
             # 将文件中保存的字典类型转换为对象类型，写入成员变量的列表中

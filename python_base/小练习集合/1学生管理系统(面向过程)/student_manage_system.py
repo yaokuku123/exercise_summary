@@ -68,7 +68,7 @@ def find_all_user():
 
 def save_data():
     try:
-        f = open('./save_student.txt', 'w', encoding='utf-8')
+        f = open('save_student.txt', 'w', encoding='utf-8')
         global students
         f.write(str(students))
     except Exception as e:
@@ -81,7 +81,7 @@ def save_data():
 
 def load_data():
     try:
-        f = open('./save_student.txt', 'r', encoding='utf-8')
+        f = open('save_student.txt', 'r', encoding='utf-8')
         global students
         students = eval(f.read())
     except Exception as e:
