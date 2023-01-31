@@ -14,7 +14,5 @@ if __name__ == '__main__':
     print(id(b))
     print(id(a[3]))
     print(id(b[3]))
-    print(id(a[4]))
-    print(id(b[4]))
 
     # 结论：对于不可变对象，浅拷贝不能拷贝外层，也不能拷贝内层对象。而是将引用指向同一个内存地址
