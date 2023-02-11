@@ -13,39 +13,16 @@
   limitations under the License. See accompanying LICENSE file.
 -->
 <configuration>
-	<!-- mr采用shuffle的方式拉取网络资源 -->
-  <property>
-    <name>yarn.nodemanager.aux-services</name>
-    <value>mapreduce_shuffle</value>
-  </property>
-	<!-- 启用HA模式 -->
-  <property>
-    <name>yarn.resourcemanager.ha.enabled</name>
-    <value>true</value>
-  </property>
-  <!-- zk集群节点 -->
-  <property>
-    <name>yarn.resourcemanager.zk-address</name>
-    <value>node02:2181,node03:2181,node04:2181</value>
-  </property>
-	<!-- zk集群id名称-自定义，用于加锁 -->
-  <property>
-    <name>yarn.resourcemanager.cluster-id</name>
-    <value>my_mr</value>
-  </property>
-	<!-- resourceManager的逻辑名称 -->
-  <property>
-    <name>yarn.resourcemanager.ha.rm-ids</name>
-    <value>rm1,rm2</value>
-  </property>
-  <!-- rm1的物理映射 -->
-  <property>
-    <name>yarn.resourcemanager.hostname.rm1</name>
-    <value>node03</value>
-  </property>
-  <!-- rm2的物理映射 -->
-  <property>
-    <name>yarn.resourcemanager.hostname.rm2</name>
-    <value>node04</value>
-  </property>
+
+    <!-- Site specific YARN configuration properties -->
+    <!--Reducer获取数据的方式-->
+    <property>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>mapreduce_shuffle</value>
+    </property>
+    <!--指定YARN的ResourceManager放到哪个服务器上-->
+    <property>
+        <name>yarn.resourcemanager.hostname</name>
+        <value>node01</value>
+    </property>
 </configuration>
