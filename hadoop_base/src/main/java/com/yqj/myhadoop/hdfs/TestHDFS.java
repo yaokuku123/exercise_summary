@@ -38,17 +38,17 @@ public class TestHDFS {
 
     @Test
     public void testUpload() throws IOException {
-        Path dirPath = new Path("/user/root/test1.txt");
-        BufferedInputStream input = new BufferedInputStream(new FileInputStream("./data/test1.txt"));
+        Path dirPath = new Path("/user/root/hdfs_data.txt");
+        BufferedInputStream input = new BufferedInputStream(new FileInputStream("./data/hdfs_data.txt"));
         FSDataOutputStream output = fs.create(dirPath);
         IOUtils.copyBytes(input, output, conf, true);
     }
 
     @Test
     public void testDownload() throws IOException {
-        Path dirPath = new Path("/user/root/test1.txt");
+        Path dirPath = new Path("/user/root/hdfs_data.txt");
         FSDataInputStream input = fs.open(dirPath);
-        BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream("./data/test1_out.txt"));
+        BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream("./data/hdfs_data_out.txt"));
         IOUtils.copyBytes(input, output, conf, true);
     }
 
