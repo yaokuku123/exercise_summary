@@ -102,9 +102,11 @@ alter table student2_new replace columns (stu_id string,stu_name string,stu_loc 
 alter table student2_new set tblproperties ('EXTERNAL'='TRUE');
 
 -- 2.4 删除表（删）
--- 1 删除内部表(表的元数据与HDFS数据一并删除)
+-- 1 清除内部表的数据，但元数据不删除(外部表执行报错)
+truncate table student;
+-- 2 删除内部表(表的元数据与HDFS数据一并删除)
 drop table student;
--- 2 删除外部表(仅删除表的元数据，不删除HDFS数据，当恢复表的元数据时可恢复对该表的操作)
+-- 3 删除外部表(仅删除表的元数据，不删除HDFS数据，当恢复表的元数据时可恢复对该表的操作)
 drop table student_ext;
 
 
