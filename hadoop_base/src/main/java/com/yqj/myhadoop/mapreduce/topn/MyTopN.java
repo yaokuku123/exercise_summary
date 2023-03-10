@@ -10,13 +10,16 @@ import org.apache.hadoop.util.GenericOptionsParser;
 
 import java.io.IOException;
 
+// 使用Maven打jar包，上传至服务器，手动使用linux命令，运行MR程序
+// 1.编写程序，maven打包
+// 2.scp上传jar至服务器
+// 3.运行MR程序，hadoop jar hadoop_base-1.0-SNAPSHOT.jar com.yqj.myhadoop.mapreduce.topn.MyTopN /data/topn/input /data/topn/output
 public class MyTopN {
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         // 设置用户环境变量
         System.setProperty("HADOOP_USER_NAME", "root");
         // 配置文件
         Configuration conf = new Configuration();
-        conf.set("mapred.jar", "target/hadoop_base-1.0-SNAPSHOT.jar");
         // 解析参数
         String[] other = new GenericOptionsParser(conf, args).getRemainingArgs();
         // job对象

@@ -15,8 +15,8 @@
 -->
 
 <!-- Put site-specific property overrides in this file. -->
-
 <configuration>
+    <!-- 采用yarn作为资源分配的方式 mr on yarn -->
     <property>
         <name>mapreduce.framework.name</name>
         <value>yarn</value>
