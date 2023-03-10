@@ -21,6 +21,9 @@ public class MyWordCountFromIdea {
         // 加载配置文件
         Configuration conf = new Configuration();
         conf.set("mapred.jar", "target/hadoop_base-1.0-SNAPSHOT.jar");
+        // 解决客户端和集群不在一个局域网导致无法访问datanode的问题
+        // datanode的 client通信是否使用域名,默认为false
+        conf.set("dfs.client.use.datanode.hostname","true");
         // 解析参数，将-D传参配置到conf对象中，剩余的参数放到数组other中
         String[] other = new GenericOptionsParser(conf, args).getRemainingArgs();
         // 使用配置文件参数创建job对象
