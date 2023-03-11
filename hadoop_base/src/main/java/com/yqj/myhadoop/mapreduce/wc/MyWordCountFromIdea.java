@@ -48,6 +48,9 @@ public class MyWordCountFromIdea {
         job.setMapOutputValueClass(IntWritable.class);
         // 设置reducer
         job.setReducerClass(MyReduce.class);
+        // 设置输出类型(默认key：LongWritable，value：Text)
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(IntWritable.class);
         // 启动job
         job.waitForCompletion(true);
     }

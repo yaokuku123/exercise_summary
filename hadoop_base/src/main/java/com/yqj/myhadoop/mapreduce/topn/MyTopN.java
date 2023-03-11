@@ -3,6 +3,7 @@ package com.yqj.myhadoop.mapreduce.topn;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
@@ -38,7 +39,7 @@ public class MyTopN {
         // mapperTask
         // mapper
         job.setMapperClass(TopnMapper.class);
-        // mapper输出格式
+        // mapper输出格式（可能是由于反射存在泛型擦除的问题）
         job.setMapOutputKeyClass(TopnKey.class);
         job.setMapOutputValueClass(IntWritable.class);
         // 设置分区器 相同年（or 相同年月），相同分区。区别：数据倾斜
@@ -50,6 +51,9 @@ public class MyTopN {
         job.setGroupingComparatorClass(TopnGroupingComparator.class);
         // reducer
         job.setReducerClass(TopnReducer.class);
+        // 设置输出类型(默认key：LongWritable，value：Text)
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(IntWritable.class);
         // 启动
         job.waitForCompletion(true);
     }
