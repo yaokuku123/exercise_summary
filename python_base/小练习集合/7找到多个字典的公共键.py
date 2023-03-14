@@ -15,7 +15,6 @@ def method1(dl: list):
 def method2(dl: dict):
     # map函数获取列表中字典的键集合，reduce函数逐步对每个字典的键集合求交集，结果为所有字典键的交集结果
     res = reduce(lambda a, b: a & b, map(dict.keys, dl))
-    reduce()
     print(res)
 
 
