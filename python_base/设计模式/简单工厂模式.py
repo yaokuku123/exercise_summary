@@ -1,17 +1,25 @@
 from abc import ABCMeta, abstractmethod
 
 '''
-Simple Factory Method
+简单工厂模式
 
-Shape（父类 or 基类）：提取出所有子类的重复方法代码
-Circle（Shape子类 or 派生类）：作用为画圆形
-Rectangle（Shape子类 or 派生类）：作用为画矩形
-ShapeFactory（新式类）：该类作用为用户可根据该类对象创建指定的Shape子类对象（Circle or Rectangle）
-优点：客户端不需要修改代码。
-缺点： 当需要增加新的运算类的时候，要修改工厂类，违反了开闭原则。
+内容：不直接向客户端暴露对象的实现细节，而是通过一个工厂类来负责创建产品类的实例
+
+角色：
+    工厂角色（Creator）
+    抽象产品角色（Product）
+    具体产品角色（Concrete Product）
+
+优点：
+    1 隐藏来对象创建的实现细节
+    2 客户端不需要修改代码
+缺点
+    1 违反来单一职责原则，将创建逻辑集中到了一个工厂类里
+    2 当添加新产品时，需要修改工厂类代码，违反类开闭原则
+
 '''
 
-
+# 抽象产品角色（Product）
 class Shape(metaclass=ABCMeta):
     '''
     父类
@@ -21,7 +29,7 @@ class Shape(metaclass=ABCMeta):
     def draw(self):
         pass
 
-
+# 具体产品角色（Concrete Product）
 class Circle(Shape):
     '''
     Shape子类
@@ -30,7 +38,7 @@ class Circle(Shape):
     def draw(self):
         print('draw circle')
 
-
+# 具体产品角色（Concrete Product）
 class Rectangle(Shape):
     '''
     Shape的子类
@@ -40,6 +48,7 @@ class Rectangle(Shape):
         print('draw Rectangle')
 
 
+# 工厂角色（Creator）
 class ShapeFactory(object):
     '''
     工厂模式：暴露给用户去调用的，

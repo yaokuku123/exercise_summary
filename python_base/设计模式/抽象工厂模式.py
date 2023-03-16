@@ -1,120 +1,118 @@
 from abc import ABCMeta, abstractmethod
 
 '''
-Abstract Factory
+抽象工厂模式
 
-AbstractFactory（父类or基类 ）
-    IntelFactory（AbstractFactory的子类or派生类）：作用为进行了创建自定品牌的零件
-    AmdFactory（AbstractFactory的子类or派生类）：作用为进行了创建自定品牌的零件
-AbstractCpu（父类or基类 ）
-    IntelCpu（AbstractCpu的子类or派生类）：作用为记录cup的型号
-    AmdCpu（AbstractCpu的子类or派生类）：作用为记录cup的型号
-AbstractMainboard（父类or基类 ）
-    IntelMainBoard（AbstractMainboard的子类or派生类）：作用为记录主板的型号
-    AmdMainBoard（AbstractMainboard的子类or派生类）：作用为记录主板的型号
-ComputerEngineer（新式类）：作用为根据工厂对象（如IntelFactory()）让其组装自身型号的零件
+内容：定义一个工厂类接口，让工厂子类来创建一系列相关或相互依赖的对象。
+相比工厂方法模式生产一种产品，抽象工厂模式中的每个具体工厂都生产一套产品。
+例：生产一部手机，需要CPU和OS对象进行组装，其中每类对象都有不同的种类。
+对每个具体工厂，分别生产一部手机需要的CPU和OS对象。
 
-抽象工厂和工厂模式的对比区别：
-抽象工厂：规定死了，依赖限制，如上面实验，你用intel的机器只能配置intel的CPU不能配置AMD的CPU（由各自的工厂指定自己的产品生产品牌）
-工厂模式：不是固定死的，举例：你可使用intel的机器配置AMD的CPU
-
-优点
-    1.分离接口和实现
-　　客户端使用抽象工厂来创建需要的对象，而客户端根本就不知道具体的实现是谁，客户端只是面向产品的接口编程而已。
-    也就是说，客户端从具体的产品实现中解耦。
-    2.使切换产品族变得容易
-　　因为一个具体的工厂实现代表的是一个产品族，比如上面例子的从Intel系列到AMD系列只需要切换一下具体工厂。
-缺点
-    1.不太容易扩展新的产品
-　　如果需要给整个产品族添加一个新的产品，那么就需要修改抽象工厂，这样就会导致修改所有的工厂实现类。
+角色：
+    抽象工厂角色（Creator）
+    具体工厂角色（Concrete Creator）
+    抽象产品角色（Product）
+    具体产品角色（Concrete Product）
+    客户端（Client）
+    
+优点：
+    1 将客户端与类的具体实现相分离
+    2 每个工厂创建了一个完整的产品系列，使得易于交换产品系列
+    3 有利于产品的一致性（即产品之间的约束关系）
+缺点：
+    1 难以支持新种类的（抽象）产品
 
 '''
 
 
-class AbstractFactory(metaclass=ABCMeta):
-    computer_name = ''
-
+# 抽象产品角色（Product）
+class Cpu(metaclass=ABCMeta):
     @abstractmethod
-    def createCpu(self):
-        pass
-
-    @abstractmethod
-    def createMainboard(self):
+    def show_cpu(self):
         pass
 
 
-class IntelFactory(AbstractFactory):
-    computer_name = 'Intel I7-series computer '
-
-    def createCpu(self):
-        return IntelCpu('I7-6500')
-
-    def createMainboard(self):
-        return IntelMainBoard('Intel-6000')
+# 抽象产品角色（Product）
+class Os(metaclass=ABCMeta):
+    @abstractmethod
+    def show_os(self):
+        pass
 
 
-class AmdFactory(AbstractFactory):
-    computer_name = 'Amd 4 computer '
-
-    def createCpu(self):
-        return AmdCpu('amd444')
-
-    def createMainboard(self):
-        return AmdMainBoard('AMD-4000')
+# 具体产品角色（Concrete Product）
+class HuaWeiCpu(Cpu):
+    def show_cpu(self):
+        print('华为CPU')
 
 
-class AbstractCpu(metaclass=ABCMeta):
-    series_name = ''
-    instructions = ''
-    arch = ''
+# 具体产品角色（Concrete Product）
+class AppleCpu(Cpu):
+    def show_cpu(self):
+        print('苹果CPU')
 
 
-class IntelCpu(AbstractCpu):
-    def __init__(self, series):
-        self.series_name = series
+# 具体产品角色（Concrete Product）
+class AndroidOs(Os):
+    def show_os(self):
+        print('安卓系统')
 
 
-class AmdCpu(AbstractCpu):
-    def __init__(self, series):
-        self.series_name = series
+# 具体产品角色（Concrete Product）
+class AppleOs(Os):
+    def show_os(self):
+        print('苹果系统')
 
 
-class AbstractMainboard(metaclass=ABCMeta):
-    series_name = ''
+# 抽象工厂角色（Creator）
+class PhoneFactory(metaclass=ABCMeta):
+    @abstractmethod
+    def make_cpu(self):
+        pass
+
+    @abstractmethod
+    def make_os(self):
+        pass
 
 
-class IntelMainBoard(AbstractMainboard):
-    def __init__(self, series):
-        self.series_name = series
+# 具体工厂角色（Concrete Creator）
+class HuaWeiPhoneFactory(PhoneFactory):
+    def make_cpu(self):
+        return HuaWeiCpu()
+
+    def make_os(self):
+        return AndroidOs()
 
 
-class AmdMainBoard(AbstractMainboard):
-    def __init__(self, series):
-        self.series_name = series
+# 具体工厂角色（Concrete Creator）
+class ApplePhoneFactory(PhoneFactory):
+    def make_cpu(self):
+        return AppleCpu()
+
+    def make_os(self):
+        return AppleOs()
 
 
-class ComputerEngineer(object):
+# 最终组装物件
+class Phone(object):
+    def __init__(self, cpu, os):
+        self.cpu = cpu
+        self.os = os
 
-    def makeComputer(self, factory_obj):
-        self.prepareHardwares(factory_obj)
-
-    def prepareHardwares(self, factory_obj):
-        self.cpu = factory_obj.createCpu()
-        self.mainboard = factory_obj.createMainboard()
-
-        info = '''------- computer [%s] info:
-    cpu: %s
-    mainboard: %s
- -------- End --------
-        ''' % (factory_obj.computer_name, self.cpu.series_name, self.mainboard.series_name)
-        print(info)
+    def show_info(self):
+        self.cpu.show_cpu()
+        self.os.show_os()
 
 
-if __name__ == "__main__":
-    engineer = ComputerEngineer()  # 装机工程师
+# 客户端（Client）
+def make_phone(factory):
+    cpu = factory.make_cpu()
+    os = factory.make_os()
+    return Phone(cpu, os)
 
-    intel_factory = IntelFactory()  # intel工厂
-    engineer.makeComputer(intel_factory)
 
-    amd_factory = AmdFactory()  # adm工厂
-    engineer.makeComputer(amd_factory)
+if __name__ == '__main__':
+    huawei_phone = make_phone(HuaWeiPhoneFactory())
+    huawei_phone.show_info()
+    print('-' * 20)
+    apple_phone = make_phone(ApplePhoneFactory())
+    apple_phone.show_info()
