@@ -63,6 +63,9 @@ public class ZkClientTest {
         data = zkClient.getData(path, false, stat);
         System.out.println(new String(data)); // hello zookeeper again
         System.out.println(stat); // 206,208,1679625730963,1679625730985,2,0,0,0,21,0,206
+
+        // 关闭资源
+        zkClient.close();
     }
 
     // 递归删除当前节点及其所有子节点
