@@ -5,7 +5,7 @@ import org.apache.zookeeper.ZooKeeper;
 public class ConfTest {
     public static void main(String[] args) throws InterruptedException {
         // 1.设置配置参数
-        ZkUtils.setConnectString("localhost:2181/testLock");
+        ZkUtils.setConnectString("localhost:2181/testConf");
         ZkUtils.setSessionTimeout(2000);
         ZkUtils.setDefaultWatcher(new DefaultWatcher());
         // 2.获取zk对象
