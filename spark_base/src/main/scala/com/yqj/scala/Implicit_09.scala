@@ -46,8 +46,8 @@ object Implicit_09 {
       new MyClass2(iter)
     }
 
-    listArray.forEach(println)
-    listLinked.forEach(println)
+    listArray.foreach(println)
+    listLinked.foreach(println)
   }
 }
 

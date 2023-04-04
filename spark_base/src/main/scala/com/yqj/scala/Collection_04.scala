@@ -11,7 +11,7 @@ object Collection_04 {
     val javaList: util.List[Int] = new util.ArrayList[Int]()
     javaList.add(10)
     javaList.add(11)
-    javaList.forEach(println)
+    println(javaList)
 
     println("--------2.Array数组---------")
     val arr: Array[Int] = Array(1, 2, 3)
