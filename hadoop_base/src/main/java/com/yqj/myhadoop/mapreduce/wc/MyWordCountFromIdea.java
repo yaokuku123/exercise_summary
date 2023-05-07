@@ -29,7 +29,7 @@ public class MyWordCountFromIdea {
         // 使用配置文件参数创建job对象
         Job job = Job.getInstance(conf);
         // 找到jar的start位置
-        job.setJarByClass(MyWordCount.class);
+        job.setJarByClass(MyWordCount.class); // 反射该类使用
         job.setJobName("my_word_count_idea");
         // 设置输入文件路径
         Path input = new Path(other[0]);

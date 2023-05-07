@@ -31,13 +31,13 @@ from emp_sex
 group by dept_id;
 
 -- 3.行转列
-    -- 1 concat 将多个字符串或列连接后返回数组结果
+    -- 1 concat 将多个字符串或列连接后返回字符串拼接结果
 select concat(deptno,'-',dname) from dept;
-    -- 2 concat_ws 特殊形式的concat。第一个参数为分隔符,其余为字符串或列。
+    -- 2 concat_ws 特殊形式的concat。第一个参数为分隔符,其余为字符串或字符串列表。
 -- 注：测试结果发现concat可以拼接int和string，但concat_ws拼接int报错
 -- select concat_ws('-',deptno,dname) from dept;  -- error
 select concat_ws('-',ename,job) from emp;
-    -- 3 collect_set 将某字段的值进行去重 汇总，产生 Array 类型字段
+    -- 3 collect_set 将某字段的值进行去重汇总，产生 Array 类型字段
 select collect_set(dname) from dept;
 -- 案例：把星座和血型一样的人归类到一起
 -- 创建测试数据表并导入
