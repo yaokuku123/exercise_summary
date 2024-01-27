@@ -1,28 +1,26 @@
 package com.yqj.class01;
 
-
 import java.util.Arrays;
 
-public class BubbleSort {
+public class Code01_SelectionSort {
 
-    public static void bubbleSort(int[] arr) {
+    public static void selectionSort(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
         }
-        for (int i = arr.length - 1; i > 0; i--) {
-            for (int j = 0; j < i; j++) {
-                if (arr[j] > arr[j + 1]) {
-                    swap(arr, j, j + 1);
-                }
+        for (int i = 0; i < arr.length - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < arr.length; j++) { // i ~ N-1 上找最小值的下标
+                minIndex = arr[j] < arr[minIndex] ? j : minIndex;
             }
+            swap(arr, i, minIndex);
         }
     }
 
-    // 交换arr的i和j位置上的值
     public static void swap(int[] arr, int i, int j) {
-        arr[i] = arr[i] ^ arr[j];
-        arr[j] = arr[i] ^ arr[j];
-        arr[i] = arr[i] ^ arr[j];
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
     }
 
     // for test
@@ -32,8 +30,12 @@ public class BubbleSort {
 
     // for test
     public static int[] generateRandomArray(int maxSize, int maxValue) {
+        // Math.random()   [0,1)
+        // Math.random() * N  [0,N)
+        // (int)(Math.random() * N)  [0, N-1]
         int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
         for (int i = 0; i < arr.length; i++) {
+            // [-? , +?]
             arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
         }
         return arr;
@@ -90,10 +92,12 @@ public class BubbleSort {
         for (int i = 0; i < testTime; i++) {
             int[] arr1 = generateRandomArray(maxSize, maxValue);
             int[] arr2 = copyArray(arr1);
-            bubbleSort(arr1);
+            selectionSort(arr1);
             comparator(arr2);
             if (!isEqual(arr1, arr2)) {
                 succeed = false;
+                printArray(arr1);
+                printArray(arr2);
                 break;
             }
         }
@@ -101,9 +105,8 @@ public class BubbleSort {
 
         int[] arr = generateRandomArray(maxSize, maxValue);
         printArray(arr);
-        bubbleSort(arr);
+        selectionSort(arr);
         printArray(arr);
     }
 
 }
-

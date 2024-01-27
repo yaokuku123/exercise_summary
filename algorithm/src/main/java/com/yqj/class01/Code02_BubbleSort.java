@@ -3,20 +3,22 @@ package com.yqj.class01;
 
 import java.util.Arrays;
 
-public class InsertionSort {
+public class Code02_BubbleSort {
 
-    public static void insertionSort(int[] arr) {
+    public static void bubbleSort(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
         }
-        for (int i = 1; i < arr.length; i++) {
-            for (int j = i - 1; j >= 0 && arr[j] > arr[j + 1]; j--) {
-                swap(arr, j, j + 1);
+        for (int i = arr.length - 1; i > 0; i--) {
+            for (int j = 0; j < i; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    swap(arr, j, j + 1);
+                }
             }
         }
     }
 
-    // i和j是一个位置的话，会出错
+    // 交换arr的i和j位置上的值
     public static void swap(int[] arr, int i, int j) {
         arr[i] = arr[i] ^ arr[j];
         arr[j] = arr[i] ^ arr[j];
@@ -30,13 +32,9 @@ public class InsertionSort {
 
     // for test
     public static int[] generateRandomArray(int maxSize, int maxValue) {
-        // Math.random() ->  [0,1) 所有的小数，等概率返回一个
-        // Math.random() * N -> [0,N) 所有小数，等概率返回一个
-        // (int)(Math.random() * N) -> [0,N-1] 所有的整数，等概率返回一个
-        int[] arr = new int[(int) ((maxSize + 1) * Math.random())]; // 长度随机
+        int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) ((maxValue + 1) * Math.random())
-                    - (int) (maxValue * Math.random());
+            arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
         }
         return arr;
     }
@@ -86,17 +84,15 @@ public class InsertionSort {
     // for test
     public static void main(String[] args) {
         int testTime = 500000;
-        int maxSize = 100; // 随机数组的长度0～100
-        int maxValue = 100;// 值：-100～100
+        int maxSize = 100;
+        int maxValue = 100;
         boolean succeed = true;
         for (int i = 0; i < testTime; i++) {
             int[] arr1 = generateRandomArray(maxSize, maxValue);
             int[] arr2 = copyArray(arr1);
-            insertionSort(arr1);
+            bubbleSort(arr1);
             comparator(arr2);
             if (!isEqual(arr1, arr2)) {
-                // 打印arr1
-                // 打印arr2
                 succeed = false;
                 break;
             }
@@ -105,7 +101,7 @@ public class InsertionSort {
 
         int[] arr = generateRandomArray(maxSize, maxValue);
         printArray(arr);
-        insertionSort(arr);
+        bubbleSort(arr);
         printArray(arr);
     }
 

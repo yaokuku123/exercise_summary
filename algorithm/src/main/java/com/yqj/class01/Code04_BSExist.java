@@ -1,36 +1,39 @@
 package com.yqj.class01;
 
-
 import java.util.Arrays;
 
-public class BSNearLeft {
+public class Code04_BSExist {
 
-    // 在arr上，找满足>=value的最左位置
-    public static int nearestIndex(int[] arr, int value) {
+    public static boolean exist(int[] sortedArr, int num) {
+        if (sortedArr == null || sortedArr.length == 0) {
+            return false;
+        }
         int L = 0;
-        int R = arr.length - 1;
-        int index = -1;
-        while (L <= R) {
-            int mid = L + ((R - L) >> 1);
-            if (arr[mid] >= value) {
-                index = mid;
+        int R = sortedArr.length - 1;
+        int mid = 0;
+        while (L < R) {
+            mid = L + ((R - L) >> 1);
+            if (sortedArr[mid] == num) {
+                return true;
+            } else if (sortedArr[mid] > num) {
                 R = mid - 1;
             } else {
                 L = mid + 1;
             }
         }
-        return index;
+        return sortedArr[L] == num;
     }
 
     // for test
-    public static int test(int[] arr, int value) {
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] >= value) {
-                return i;
+    public static boolean test(int[] sortedArr, int num) {
+        for (int cur : sortedArr) {
+            if (cur == num) {
+                return true;
             }
         }
-        return -1;
+        return false;
     }
+
 
     // for test
     public static int[] generateRandomArray(int maxSize, int maxValue) {
@@ -39,17 +42,6 @@ public class BSNearLeft {
             arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
         }
         return arr;
-    }
-
-    // for test
-    public static void printArray(int[] arr) {
-        if (arr == null) {
-            return;
-        }
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
     }
 
     public static void main(String[] args) {
@@ -61,11 +53,7 @@ public class BSNearLeft {
             int[] arr = generateRandomArray(maxSize, maxValue);
             Arrays.sort(arr);
             int value = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
-            if (test(arr, value) != nearestIndex(arr, value)) {
-                printArray(arr);
-                System.out.println(value);
-                System.out.println(test(arr, value));
-                System.out.println(nearestIndex(arr, value));
+            if (test(arr, value) != exist(arr, value)) {
                 succeed = false;
                 break;
             }
@@ -74,3 +62,4 @@ public class BSNearLeft {
     }
 
 }
+
