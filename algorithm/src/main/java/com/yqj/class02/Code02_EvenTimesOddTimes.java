@@ -1,6 +1,6 @@
-package com.yqj.class01;
+package com.yqj.class02;
 
-public class EvenTimesOddTimes {
+public class Code02_EvenTimesOddTimes {
 
     // arr中，只有一种数，出现奇数次
     public static void printOddTimesNum1(int[] arr) {
@@ -37,24 +37,16 @@ public class EvenTimesOddTimes {
 
     public static int bit1counts(int N) {
         int count = 0;
-
         //   011011010000
         //   000000010000     1
-
         //   011011000000
-        //
-
-
         while (N != 0) {
             int rightOne = N & ((~N) + 1);
             count++;
             N ^= rightOne;
             // N -= rightOne
         }
-
-
         return count;
-
     }
 
 
@@ -75,6 +67,7 @@ public class EvenTimesOddTimes {
         int[] arr2 = {4, 3, 4, 2, 2, 2, 4, 1, 1, 1, 3, 3, 1, 1, 1, 4, 2, 2};
         printOddTimesNum2(arr2);
 
+        System.out.println(bit1counts(11));
     }
 
 }
