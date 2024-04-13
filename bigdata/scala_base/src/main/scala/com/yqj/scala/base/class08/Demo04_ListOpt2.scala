@@ -47,6 +47,7 @@ object Demo04_ListOpt2 {
     // mkString转换字符串，格式可以自定义，默认直接拼接无间隔符号
     println(l2.mkString)
     println(l2.mkString(":"))
+    println("-" * 10)
 
     // 五、交并差
     val ll1 = List(1, 2, 3, 4)

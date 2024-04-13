@@ -5,7 +5,7 @@ object Demo04_Trait {
     // 具体字段
     var name = "yorick"
     // 抽象字段
-    var arms:String
+    var arms:String // 说明：只有抽象var变量才可以覆写，已经赋值的var变量无法覆写
     // 具体方法
     def eat():Unit = println(s"${name} like eat")
     // 抽象方法
