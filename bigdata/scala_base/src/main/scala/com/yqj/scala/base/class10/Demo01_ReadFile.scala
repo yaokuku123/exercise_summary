@@ -1,5 +1,7 @@
 package com.yqj.scala.base.class10
 
+import java.io.{File, FileInputStream}
+
 import scala.io.Source
 
 object Demo01_ReadFile {
@@ -55,5 +57,14 @@ object Demo01_ReadFile {
     val urlData = source6.mkString
     println(urlData)
     source6.close()
+    println("-" * 10)
+
+    // 读取二进制文件
+    val file = new File("./scala_base/data/pic1.png")
+    val fis = new FileInputStream(file)
+    val buf = new Array[Byte](file.length().toInt)
+    val len = fis.read(buf)
+    println(len)
+    fis.close()
   }
 }
