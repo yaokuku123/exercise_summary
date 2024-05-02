@@ -40,13 +40,13 @@ func (this *PingRouter) PostHandle(request ziface.IRequest) {
 
 func TestServer(t *testing.T) {
 	// 启动服务端
-	server := znet.NewServer("zinx server", "tcp4", "127.0.0.1", 8999)
+	server := znet.NewServer()
 	// 添加自定义路由
 	server.AddRouter(&PingRouter{})
 	// 启动客户端
 	go func() {
 		time.Sleep(3 * time.Second)
-		conn, err := net.Dial("tcp", "127.0.0.1:8999")
+		conn, err := net.Dial("tcp", "127.0.0.1:7777")
 		if err != nil {
 			fmt.Println("conn err:", err)
 			return

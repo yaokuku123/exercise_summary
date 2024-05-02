@@ -2,6 +2,7 @@ package znet
 
 import (
 	"fmt"
+	"github.com/yaokuku123/exercise_summary/go_project/zinx/utils"
 	"github.com/yaokuku123/exercise_summary/go_project/zinx/ziface"
 	"net"
 )
@@ -14,12 +15,12 @@ type Server struct {
 	Router     ziface.IRouter
 }
 
-func NewServer(name, ipVersion, serverIp string, serverPort int) *Server {
+func NewServer() *Server {
 	return &Server{
-		Name:       name,
-		IpVersion:  ipVersion,
-		ServerIp:   serverIp,
-		ServerPort: serverPort,
+		Name:       utils.GlobalObject.Name,
+		IpVersion:  "tcp4",
+		ServerIp:   utils.GlobalObject.ServerIp,
+		ServerPort: utils.GlobalObject.ServerPort,
 		Router:     nil,
 	}
 }
@@ -27,6 +28,8 @@ func NewServer(name, ipVersion, serverIp string, serverPort int) *Server {
 // 启动服务器
 func (this *Server) Start() {
 	fmt.Println("server start")
+	fmt.Printf("[server config] Name:%s Version:%s IP:%s Port:%d\n", utils.GlobalObject.Name, utils.GlobalObject.Version, utils.GlobalObject.ServerIp, utils.GlobalObject.ServerPort)
+	fmt.Printf("[zinx config] MaxPackageSize:%d MaxConn:%d\n", utils.GlobalObject.MaxPackageSize, utils.GlobalObject.MaxConn)
 	go func() {
 		// 创建tcp连接地址
 		addr, err := net.ResolveTCPAddr(this.IpVersion, fmt.Sprintf("%s:%d", this.ServerIp, this.ServerPort))

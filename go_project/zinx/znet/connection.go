@@ -2,6 +2,7 @@ package znet
 
 import (
 	"fmt"
+	"github.com/yaokuku123/exercise_summary/go_project/zinx/utils"
 	"github.com/yaokuku123/exercise_summary/go_project/zinx/ziface"
 	"net"
 )
@@ -30,7 +31,7 @@ func (this *Connection) StartReader() {
 	fmt.Println("start reader...")
 	for {
 		// 读取数据
-		buf := make([]byte, 1024)
+		buf := make([]byte, utils.GlobalObject.MaxPackageSize)
 		_, err := this.Conn.Read(buf)
 		if err != nil {
 			fmt.Println("read err:", err)
