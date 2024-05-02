@@ -13,7 +13,7 @@ type GlobalObj struct {
 	ServerPort int
 
 	// zinx config
-	MaxPackageSize int
+	MaxPackageSize uint32
 	MaxConn        int
 }
 

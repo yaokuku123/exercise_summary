@@ -1,9 +1,10 @@
 package znet
 
 import (
+	"errors"
 	"fmt"
-	"github.com/yaokuku123/exercise_summary/go_project/zinx/utils"
 	"github.com/yaokuku123/exercise_summary/go_project/zinx/ziface"
+	"io"
 	"net"
 )
 
@@ -31,15 +32,34 @@ func (this *Connection) StartReader() {
 	fmt.Println("start reader...")
 	for {
 		// 读取数据
-		buf := make([]byte, utils.GlobalObject.MaxPackageSize)
-		_, err := this.Conn.Read(buf)
+		dp := NewDataPack()
+		headData := make([]byte, dp.GetHeadLen())
+		_, err := io.ReadFull(this.GetTCPConnection(), headData)
 		if err != nil {
 			fmt.Println("read err:", err)
 			this.ExitChan <- true
-			return
+			continue
 		}
+
+		msg, err := dp.UnPack(headData)
+		if err != nil {
+			fmt.Println("unpack err:", err)
+			this.ExitChan <- true
+			continue
+		}
+		if msg.GetDataLen() == 0 {
+			fmt.Println("Msg len is zero")
+			this.ExitChan <- true
+			continue
+		}
+		data := make([]byte, msg.GetDataLen())
+		if _, err := io.ReadFull(this.GetTCPConnection(), data); err != nil {
+			fmt.Println("read err:", err)
+			continue
+		}
+		msg.SetData(data)
 		// 封装请求对象
-		req := &Request{Conn: this, data: buf}
+		req := &Request{Conn: this, Msg: msg}
 
 		// 调用路由异步处理请求
 		go func(req ziface.IRequest) {
@@ -84,4 +104,25 @@ func (this *Connection) GetConnID() uint32 {
 
 func (this *Connection) GetTCPConnection() *net.TCPConn {
 	return this.Conn
+}
+
+func (this *Connection) SendMsg(id uint32, data []byte) error {
+	// 失去链接
+	if this.isClosed {
+		return errors.New("connection is closed")
+	}
+	// 打包
+	dp := NewDataPack()
+	msg, err := dp.Pack(NewMessage(id, data))
+	if err != nil {
+		fmt.Println("pack err:", err)
+		return errors.New("pack err")
+	}
+	// 发送
+	_, err = this.Conn.Write(msg)
+	if err != nil {
+		fmt.Println("send err:", err)
+		return errors.New("send err")
+	}
+	return nil
 }

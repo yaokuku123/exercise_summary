@@ -11,6 +11,8 @@ type IConnection interface {
 	GetConnID() uint32
 	// 获取链接
 	GetTCPConnection() *net.TCPConn
+	// 发送封装好的消息
+	SendMsg(uint32, []byte) error
 }
 
 type HandFunc func(*net.TCPConn, []byte, int) error

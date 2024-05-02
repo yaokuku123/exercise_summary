@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/yaokuku123/exercise_summary/go_project/zinx/ziface"
 	"github.com/yaokuku123/exercise_summary/go_project/zinx/znet"
+	"io"
 	"net"
 	"testing"
 	"time"
@@ -14,27 +15,14 @@ type PingRouter struct {
 	znet.Router
 }
 
-// 前置处理
-func (this *PingRouter) PreHandle(request ziface.IRequest) {
-	_, err := request.GetConnection().GetTCPConnection().Write([]byte("before ping\n"))
-	if err != nil {
-		fmt.Println("PreHandle err:", err)
-	}
-}
-
 // 主处理
 func (this *PingRouter) Handle(request ziface.IRequest) {
-	_, err := request.GetConnection().GetTCPConnection().Write([]byte("ping ping ping...\n"))
+	//先读取客户端的数据，再回写ping...ping...ping
+	fmt.Println("recv from client : msgId=", request.GetMsgID(), ", data=", string(request.GetData()))
+	err := request.GetConnection().SendMsg(1, []byte("ping...ping...ping..."))
 	if err != nil {
-		fmt.Println("Handle err:", err)
-	}
-}
-
-// 后置处理
-func (this *PingRouter) PostHandle(request ziface.IRequest) {
-	_, err := request.GetConnection().GetTCPConnection().Write([]byte("post ping\n"))
-	if err != nil {
-		fmt.Println("PostHandle err:", err)
+		fmt.Println("send err:", err)
+		return
 	}
 }
 
@@ -53,19 +41,41 @@ func TestServer(t *testing.T) {
 		}
 		defer conn.Close()
 		for {
-			// 向服务端写数据
-			if _, err := conn.Write([]byte("hello zinx server!")); err != nil {
+			// 向服务端写数据-封包消息
+			dp := znet.NewDataPack()
+			binaryMsg, err := dp.Pack(znet.NewMessage(2, []byte("hello zinx server")))
+			if err != nil {
+				fmt.Println("pack err:", err)
+				return
+			}
+			if _, err := conn.Write(binaryMsg); err != nil {
 				fmt.Println("write err:", err)
 				return
 			}
-			// 处理服务端回写数据
-			buf := make([]byte, 1024)
-			cnt, err := conn.Read(buf)
-			if err != nil {
-				fmt.Println("read err:", err)
+			// 拆包读取
+			headData := make([]byte, dp.GetHeadLen())
+			if _, err := io.ReadFull(conn, headData); err != nil {
+				fmt.Println("read head err:", err)
 				return
 			}
-			fmt.Println("<==== resv from server callback msg:", string(buf[:cnt]))
+			msg, err := dp.UnPack(headData)
+			if err != nil {
+				fmt.Println("unpack err:", err)
+				return
+			}
+			if msg.GetDataLen() == 0 {
+				fmt.Println("msg data len is zero")
+				return
+			}
+			data := make([]byte, msg.GetDataLen())
+			if _, err := io.ReadFull(conn, data); err != nil {
+				fmt.Println("read data err:", err)
+				return
+			}
+			msg.SetData(data)
+
+			fmt.Println("==> Recv Msg: ID=", msg.GetMsgId(), ", len=", msg.GetDataLen(), ", data=", string(msg.GetData()))
+
 			time.Sleep(1 * time.Second)
 		}
 	}()
