@@ -1,8 +1,8 @@
 package znet
 
 import (
-	"errors"
 	"fmt"
+	"github.com/yaokuku123/exercise_summary/go_project/zinx/ziface"
 	"net"
 )
 
@@ -11,6 +11,7 @@ type Server struct {
 	IpVersion  string
 	ServerIp   string
 	ServerPort int
+	Router     ziface.IRouter
 }
 
 func NewServer(name, ipVersion, serverIp string, serverPort int) *Server {
@@ -19,6 +20,7 @@ func NewServer(name, ipVersion, serverIp string, serverPort int) *Server {
 		IpVersion:  ipVersion,
 		ServerIp:   serverIp,
 		ServerPort: serverPort,
+		Router:     nil,
 	}
 }
 
@@ -47,14 +49,7 @@ func (this *Server) Start() {
 				return
 			}
 			// 封装链接对象
-			dealConn := NewConnection(cid, conn, func(conn *net.TCPConn, buf []byte, cnt int) error {
-				_, err := conn.Write(buf[:cnt])
-				if err != nil {
-					fmt.Println("write err:", err)
-					return errors.New("server write error")
-				}
-				return nil
-			})
+			dealConn := NewConnection(cid, conn, this.Router)
 			// 异步启动客户端
 			go dealConn.Start()
 			cid++
@@ -76,4 +71,8 @@ func (this *Server) Serve() {
 
 	// 阻塞
 	select {}
+}
+
+func (this *Server) AddRouter(router ziface.IRouter) {
+	this.Router = router
 }

@@ -9,6 +9,8 @@ type IConnection interface {
 	Stop()
 	// 获取当前连接ID
 	GetConnID() uint32
+	// 获取链接
+	GetTCPConnection() *net.TCPConn
 }
 
 type HandFunc func(*net.TCPConn, []byte, int) error

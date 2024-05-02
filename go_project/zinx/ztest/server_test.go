@@ -2,16 +2,47 @@ package ztest
 
 import (
 	"fmt"
+	"github.com/yaokuku123/exercise_summary/go_project/zinx/ziface"
 	"github.com/yaokuku123/exercise_summary/go_project/zinx/znet"
 	"net"
 	"testing"
 	"time"
 )
 
+// 继承zinx的路由对象
+type PingRouter struct {
+	znet.Router
+}
+
+// 前置处理
+func (this *PingRouter) PreHandle(request ziface.IRequest) {
+	_, err := request.GetConnection().GetTCPConnection().Write([]byte("before ping\n"))
+	if err != nil {
+		fmt.Println("PreHandle err:", err)
+	}
+}
+
+// 主处理
+func (this *PingRouter) Handle(request ziface.IRequest) {
+	_, err := request.GetConnection().GetTCPConnection().Write([]byte("ping ping ping...\n"))
+	if err != nil {
+		fmt.Println("Handle err:", err)
+	}
+}
+
+// 后置处理
+func (this *PingRouter) PostHandle(request ziface.IRequest) {
+	_, err := request.GetConnection().GetTCPConnection().Write([]byte("post ping\n"))
+	if err != nil {
+		fmt.Println("PostHandle err:", err)
+	}
+}
+
 func TestServer(t *testing.T) {
 	// 启动服务端
 	server := znet.NewServer("zinx server", "tcp4", "127.0.0.1", 8999)
-
+	// 添加自定义路由
+	server.AddRouter(&PingRouter{})
 	// 启动客户端
 	go func() {
 		time.Sleep(3 * time.Second)

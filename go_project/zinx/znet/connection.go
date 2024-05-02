@@ -13,15 +13,16 @@ type Connection struct {
 	handleAPI ziface.HandFunc
 	isClosed  bool
 	ExitChan  chan bool
+	Router    ziface.IRouter
 }
 
-func NewConnection(id uint32, conn *net.TCPConn, handleAPI ziface.HandFunc) *Connection {
+func NewConnection(id uint32, conn *net.TCPConn, router ziface.IRouter) *Connection {
 	return &Connection{
-		Id:        id,
-		Conn:      conn,
-		handleAPI: handleAPI,
-		isClosed:  false,
-		ExitChan:  make(chan bool, 1),
+		Id:       id,
+		Conn:     conn,
+		isClosed: false,
+		ExitChan: make(chan bool, 1),
+		Router:   router,
 	}
 }
 
@@ -30,21 +31,21 @@ func (this *Connection) StartReader() {
 	for {
 		// 读取数据
 		buf := make([]byte, 1024)
-		cnt, err := this.Conn.Read(buf)
+		_, err := this.Conn.Read(buf)
 		if err != nil {
 			fmt.Println("read err:", err)
 			this.ExitChan <- true
 			return
 		}
-		fmt.Println("====> recv client msg:", string(buf[:cnt]))
+		// 封装请求对象
+		req := &Request{Conn: this, data: buf}
 
-		// 处理方法
-		err = this.handleAPI(this.Conn, buf, cnt)
-		if err != nil {
-			fmt.Println("handle err:", err)
-			this.ExitChan <- true
-			return
-		}
+		// 调用路由异步处理请求
+		go func(req ziface.IRequest) {
+			this.Router.PreHandle(req)
+			this.Router.Handle(req)
+			this.Router.PostHandle(req)
+		}(req)
 	}
 }
 
@@ -78,4 +79,8 @@ func (this *Connection) Stop() {
 
 func (this *Connection) GetConnID() uint32 {
 	return this.Id
+}
+
+func (this *Connection) GetTCPConnection() *net.TCPConn {
+	return this.Conn
 }
