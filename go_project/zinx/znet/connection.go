@@ -3,6 +3,7 @@ package znet
 import (
 	"errors"
 	"fmt"
+	"github.com/yaokuku123/exercise_summary/go_project/zinx/utils"
 	"github.com/yaokuku123/exercise_summary/go_project/zinx/ziface"
 	"io"
 	"net"
@@ -65,7 +66,11 @@ func (this *Connection) StartReader() {
 		req := &Request{Conn: this, Msg: msg}
 
 		// 调用路由异步处理请求
-		go this.MsgHandler.DoMsgHandler(req)
+		if utils.GlobalObject.WorkerPoolSize > 0 {
+			go this.MsgHandler.SendMsgToTaskQueue(req)
+		} else {
+			go this.MsgHandler.DoMsgHandler(req)
+		}
 	}
 }
 

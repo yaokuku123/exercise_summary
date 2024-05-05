@@ -13,8 +13,10 @@ type GlobalObj struct {
 	ServerPort int
 
 	// zinx config
-	MaxPackageSize uint32
-	MaxConn        int
+	MaxPackageSize   uint32
+	MaxConn          int
+	WorkerPoolSize   uint32
+	MaxWorkerTaskLen uint32
 }
 
 func (this *GlobalObj) Reload() {
@@ -33,12 +35,14 @@ var GlobalObject *GlobalObj
 
 func init() {
 	GlobalObject = &GlobalObj{
-		Name:           "zinx server",
-		Version:        "0.0.1",
-		ServerIp:       "127.0.0.1",
-		ServerPort:     8999,
-		MaxPackageSize: 1024,
-		MaxConn:        100,
+		Name:             "zinx server",
+		Version:          "0.0.1",
+		ServerIp:         "127.0.0.1",
+		ServerPort:       8999,
+		MaxPackageSize:   1024,
+		MaxConn:          100,
+		WorkerPoolSize:   10,
+		MaxWorkerTaskLen: 1024,
 	}
 	// 加载配置文件
 	GlobalObject.Reload()

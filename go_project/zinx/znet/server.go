@@ -31,6 +31,8 @@ func (this *Server) Start() {
 	fmt.Printf("[server config] Name:%s Version:%s IP:%s Port:%d\n", utils.GlobalObject.Name, utils.GlobalObject.Version, utils.GlobalObject.ServerIp, utils.GlobalObject.ServerPort)
 	fmt.Printf("[zinx config] MaxPackageSize:%d MaxConn:%d\n", utils.GlobalObject.MaxPackageSize, utils.GlobalObject.MaxConn)
 	go func() {
+		// 启动工作池
+		this.MsgHandler.StartWorkerPool()
 		// 创建tcp连接地址
 		addr, err := net.ResolveTCPAddr(this.IpVersion, fmt.Sprintf("%s:%d", this.ServerIp, this.ServerPort))
 		if err != nil {
