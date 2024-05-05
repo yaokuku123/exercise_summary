@@ -7,6 +7,7 @@ import (
 	"github.com/yaokuku123/exercise_summary/go_project/zinx/ziface"
 	"io"
 	"net"
+	"sync"
 )
 
 type Connection struct {
@@ -19,10 +20,12 @@ type Connection struct {
 	ExitChan   chan bool
 	MsgHandler ziface.IMsgHandler
 	MsgChan    chan []byte
+	Props      map[string]interface{}
+	PropsLock  sync.RWMutex
 }
 
 func NewConnection(server ziface.IServer, id uint32, conn *net.TCPConn, handler ziface.IMsgHandler) *Connection {
-	return &Connection{
+	c := &Connection{
 		TcpServer:  server,
 		Id:         id,
 		Conn:       conn,
@@ -30,7 +33,11 @@ func NewConnection(server ziface.IServer, id uint32, conn *net.TCPConn, handler 
 		ExitChan:   make(chan bool, 1),
 		MsgHandler: handler,
 		MsgChan:    make(chan []byte),
+		Props:      make(map[string]interface{}),
 	}
+	//将新创建的Conn添加到链接管理中
+	c.TcpServer.GetConnMgr().Add(c)
+	return c
 }
 
 func (this *Connection) StartReader() {
@@ -96,8 +103,6 @@ func (this *Connection) StartWriter() {
 }
 
 func (this *Connection) Start() {
-	// 添加链接至管理器
-	this.TcpServer.GetConnMgr().Add(this)
 	// 处理读请求
 	go this.StartReader()
 	// 处理写请求
@@ -156,4 +161,30 @@ func (this *Connection) SendMsg(id uint32, data []byte) error {
 	// 向写管道中填充数据
 	this.MsgChan <- msg
 	return nil
+}
+
+// 添加自定义属性信息
+func (this *Connection) SetProperty(key string, value interface{}) {
+	this.PropsLock.Lock()
+	defer this.PropsLock.Unlock()
+	this.Props[key] = value
+}
+
+// 获取自定义属性信息
+func (this *Connection) GetProperty(key string) (interface{}, error) {
+	this.PropsLock.RLock()
+	defer this.PropsLock.RUnlock()
+	value, ok := this.Props[key]
+	if !ok {
+		return nil, errors.New("no property found")
+	} else {
+		return value, nil
+	}
+}
+
+// 删除自定义属性信息
+func (this *Connection) RemoveProperty(key string) {
+	this.PropsLock.Lock()
+	defer this.PropsLock.Unlock()
+	delete(this.Props, key)
 }

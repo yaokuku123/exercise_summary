@@ -39,6 +39,9 @@ func (this *HelloRouter) Handle(request ziface.IRequest) {
 
 func DoConnectionBegin(conn ziface.IConnection) {
 	fmt.Println("DoConnecionBegin is Called ... ")
+	// 设置自定义属性
+	conn.SetProperty("Name", "yorick")
+	conn.SetProperty("Age", 27)
 	err := conn.SendMsg(201, []byte("DoConnectionBegin..."))
 	if err != nil {
 		fmt.Println(err)
@@ -48,6 +51,10 @@ func DoConnectionBegin(conn ziface.IConnection) {
 // 连接断开的时候执行
 func DoConnectionLost(conn ziface.IConnection) {
 	fmt.Println("DoConnectionLost is Called ... ")
+	// 获取自定义属性信息
+	name, _ := conn.GetProperty("Name")
+	age, _ := conn.GetProperty("Age")
+	fmt.Println("Name: ", name, " Age: ", age)
 }
 
 func main() {
