@@ -8,5 +8,7 @@ type IServer interface {
 	// 运行服务器
 	Serve()
 	// 添加路由
-	AddRouter(uint32, IMsgHandler)
+	AddRouter(uint32, IRouter)
+	// 获取链接管理器
+	GetConnMgr() IConnManager
 }

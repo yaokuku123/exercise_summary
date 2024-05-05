@@ -10,8 +10,9 @@ import (
 )
 
 type Connection struct {
-	Id   uint32
-	Conn *net.TCPConn
+	TcpServer ziface.IServer
+	Id        uint32
+	Conn      *net.TCPConn
 	//该连接的处理方法api
 	handleAPI  ziface.HandFunc
 	isClosed   bool
@@ -20,8 +21,9 @@ type Connection struct {
 	MsgChan    chan []byte
 }
 
-func NewConnection(id uint32, conn *net.TCPConn, handler ziface.IMsgHandler) *Connection {
+func NewConnection(server ziface.IServer, id uint32, conn *net.TCPConn, handler ziface.IMsgHandler) *Connection {
 	return &Connection{
+		TcpServer:  server,
 		Id:         id,
 		Conn:       conn,
 		isClosed:   false,
@@ -94,6 +96,8 @@ func (this *Connection) StartWriter() {
 }
 
 func (this *Connection) Start() {
+	// 添加链接至管理器
+	this.TcpServer.GetConnMgr().Add(this)
 	// 处理读请求
 	go this.StartReader()
 	// 处理写请求
@@ -120,6 +124,8 @@ func (this *Connection) Stop() {
 	this.Conn.Close()
 	// 关闭管道
 	this.ExitChan <- true
+	// 将自身移除管理器
+	this.TcpServer.GetConnMgr().Remove(this)
 	close(this.ExitChan)
 }
 

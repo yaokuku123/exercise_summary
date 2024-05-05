@@ -13,6 +13,7 @@ type Server struct {
 	ServerIp   string
 	ServerPort int
 	MsgHandler ziface.IMsgHandler
+	ConnMgr    ziface.IConnManager
 }
 
 func NewServer() *Server {
@@ -22,6 +23,7 @@ func NewServer() *Server {
 		ServerIp:   utils.GlobalObject.ServerIp,
 		ServerPort: utils.GlobalObject.ServerPort,
 		MsgHandler: NewMsgHandler(),
+		ConnMgr:    NewConnManager(),
 	}
 }
 
@@ -53,8 +55,14 @@ func (this *Server) Start() {
 				fmt.Println("accept err:", err)
 				continue
 			}
+			// 查看当前的客户端链接数量是否超过管理器的阈值
+			if this.ConnMgr.Len() >= utils.GlobalObject.MaxConn {
+				fmt.Println("conn pool full")
+				conn.Close()
+				continue
+			}
 			// 封装链接对象
-			dealConn := NewConnection(cid, conn, this.MsgHandler)
+			dealConn := NewConnection(this, cid, conn, this.MsgHandler)
 			// 异步启动客户端
 			go dealConn.Start()
 			cid++
@@ -65,6 +73,7 @@ func (this *Server) Start() {
 // Stop 关闭服务器
 func (this *Server) Stop() {
 	fmt.Println("server stop")
+	this.GetConnMgr().ClearConn()
 }
 
 // Serve 运行服务器
@@ -81,4 +90,9 @@ func (this *Server) Serve() {
 // AddRouter 添加路由
 func (this *Server) AddRouter(msgId uint32, router ziface.IRouter) {
 	this.MsgHandler.AddRouter(msgId, router)
+}
+
+// GetConnMgr 获取链接管理器
+func (this *Server) GetConnMgr() ziface.IConnManager {
+	return this.ConnMgr
 }

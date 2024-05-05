@@ -10,7 +10,6 @@ import (
 
 // 启动客户端
 func main() {
-	time.Sleep(3 * time.Second)
 	conn, err := net.Dial("tcp", "127.0.0.1:8999")
 	if err != nil {
 		fmt.Println("conn err:", err)
