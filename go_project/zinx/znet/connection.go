@@ -16,6 +16,7 @@ type Connection struct {
 	isClosed   bool
 	ExitChan   chan bool
 	MsgHandler ziface.IMsgHandler
+	MsgChan    chan []byte
 }
 
 func NewConnection(id uint32, conn *net.TCPConn, handler ziface.IMsgHandler) *Connection {
@@ -25,11 +26,16 @@ func NewConnection(id uint32, conn *net.TCPConn, handler ziface.IMsgHandler) *Co
 		isClosed:   false,
 		ExitChan:   make(chan bool, 1),
 		MsgHandler: handler,
+		MsgChan:    make(chan []byte),
 	}
 }
 
 func (this *Connection) StartReader() {
 	fmt.Println("start reader...")
+	defer func() {
+		fmt.Println("[reader exit]")
+		this.Stop()
+	}()
 	for {
 		// 读取数据
 		dp := NewDataPack()
@@ -37,22 +43,22 @@ func (this *Connection) StartReader() {
 		_, err := io.ReadFull(this.GetTCPConnection(), headData)
 		if err != nil {
 			fmt.Println("read err:", err)
-			continue
+			return
 		}
 
 		msg, err := dp.UnPack(headData)
 		if err != nil {
 			fmt.Println("unpack err:", err)
-			continue
+			return
 		}
 		if msg.GetDataLen() == 0 {
 			fmt.Println("Msg len is zero")
-			continue
+			return
 		}
 		data := make([]byte, msg.GetDataLen())
 		if _, err := io.ReadFull(this.GetTCPConnection(), data); err != nil {
 			fmt.Println("read err:", err)
-			continue
+			return
 		}
 		msg.SetData(data)
 		// 封装请求对象
@@ -63,9 +69,30 @@ func (this *Connection) StartReader() {
 	}
 }
 
+func (this *Connection) StartWriter() {
+	fmt.Println("start writer...")
+	defer fmt.Println("[writer exit]")
+	for {
+		select {
+		// 处理写数据
+		case data := <-this.MsgChan:
+			_, err := this.Conn.Write(data)
+			if err != nil {
+				fmt.Println("write err:", err)
+				return
+			}
+		// 关闭链接
+		case <-this.ExitChan:
+			return
+		}
+	}
+}
+
 func (this *Connection) Start() {
 	// 处理读请求
 	go this.StartReader()
+	// 处理写请求
+	go this.StartWriter()
 
 	// 阻塞，等待关闭链接
 	for {
@@ -111,11 +138,7 @@ func (this *Connection) SendMsg(id uint32, data []byte) error {
 		fmt.Println("pack err:", err)
 		return errors.New("pack err")
 	}
-	// 发送
-	_, err = this.Conn.Write(msg)
-	if err != nil {
-		fmt.Println("send err:", err)
-		return errors.New("send err")
-	}
+	// 向写管道中填充数据
+	this.MsgChan <- msg
 	return nil
 }
