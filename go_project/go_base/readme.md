@@ -38,8 +38,8 @@ type PingRouter struct {
 
 //Ping Handle MsgId=1
 func (r *PingRouter) Handle(request ziface.IRequest) {
-	//read client data
-	fmt.Println("recv from client : msgId=", request.GetMsgID(), ", data=", string(request.GetData()))
+	//read client Data
+	fmt.Println("recv from client : msgId=", request.GetMsgID(), ", Data=", string(request.GetData()))
 }
 
 func main() {
