@@ -8,12 +8,14 @@ import (
 )
 
 type Server struct {
-	Name       string
-	IpVersion  string
-	ServerIp   string
-	ServerPort int
-	MsgHandler ziface.IMsgHandler
-	ConnMgr    ziface.IConnManager
+	Name            string
+	IpVersion       string
+	ServerIp        string
+	ServerPort      int
+	MsgHandler      ziface.IMsgHandler
+	ConnMgr         ziface.IConnManager
+	OnConnStartFunc func(conn ziface.IConnection)
+	OnConnStopFunc  func(conn ziface.IConnection)
 }
 
 func NewServer() *Server {
@@ -95,4 +97,26 @@ func (this *Server) AddRouter(msgId uint32, router ziface.IRouter) {
 // GetConnMgr 获取链接管理器
 func (this *Server) GetConnMgr() ziface.IConnManager {
 	return this.ConnMgr
+}
+
+func (this *Server) SetOnConnStart(startFunc func(conn ziface.IConnection)) {
+	this.OnConnStartFunc = startFunc
+}
+
+func (this *Server) SetOnConnStop(stopFunc func(conn ziface.IConnection)) {
+	this.OnConnStopFunc = stopFunc
+}
+
+func (this *Server) CallOnConnStart(conn ziface.IConnection) {
+	if this.OnConnStartFunc != nil {
+		fmt.Println("---> CallOnConnStart....")
+		this.OnConnStartFunc(conn)
+	}
+}
+
+func (this *Server) CallOnConnStop(conn ziface.IConnection) {
+	if this.OnConnStopFunc != nil {
+		fmt.Println("---> CallOnConnStop....")
+		this.OnConnStopFunc(conn)
+	}
 }

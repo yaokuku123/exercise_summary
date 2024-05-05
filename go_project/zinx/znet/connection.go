@@ -102,6 +102,8 @@ func (this *Connection) Start() {
 	go this.StartReader()
 	// 处理写请求
 	go this.StartWriter()
+	// 调用回调函数
+	this.TcpServer.CallOnConnStart(this)
 
 	// 阻塞，等待关闭链接
 	for {
@@ -120,6 +122,8 @@ func (this *Connection) Stop() {
 	}
 	// 置为关闭
 	this.isClosed = true
+	// 调用关闭链接前的回调函数
+	this.TcpServer.CallOnConnStop(this)
 	// 关闭链接
 	this.Conn.Close()
 	// 关闭管道

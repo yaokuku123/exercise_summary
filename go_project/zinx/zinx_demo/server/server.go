@@ -37,9 +37,25 @@ func (this *HelloRouter) Handle(request ziface.IRequest) {
 	}
 }
 
+func DoConnectionBegin(conn ziface.IConnection) {
+	fmt.Println("DoConnecionBegin is Called ... ")
+	err := conn.SendMsg(201, []byte("DoConnectionBegin..."))
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+// 连接断开的时候执行
+func DoConnectionLost(conn ziface.IConnection) {
+	fmt.Println("DoConnectionLost is Called ... ")
+}
+
 func main() {
 	// 启动服务端
 	server := znet.NewServer()
+	// 设置回调
+	server.SetOnConnStart(DoConnectionBegin)
+	server.SetOnConnStop(DoConnectionLost)
 	// 添加自定义路由
 	server.AddRouter(0, &PingRouter{})
 	server.AddRouter(1, &HelloRouter{})
