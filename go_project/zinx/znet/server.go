@@ -12,7 +12,7 @@ type Server struct {
 	IpVersion  string
 	ServerIp   string
 	ServerPort int
-	Router     ziface.IRouter
+	MsgHandler ziface.IMsgHandler
 }
 
 func NewServer() *Server {
@@ -21,11 +21,11 @@ func NewServer() *Server {
 		IpVersion:  "tcp4",
 		ServerIp:   utils.GlobalObject.ServerIp,
 		ServerPort: utils.GlobalObject.ServerPort,
-		Router:     nil,
+		MsgHandler: NewMsgHandler(),
 	}
 }
 
-// 启动服务器
+// Start 启动服务器
 func (this *Server) Start() {
 	fmt.Println("server start")
 	fmt.Printf("[server config] Name:%s Version:%s IP:%s Port:%d\n", utils.GlobalObject.Name, utils.GlobalObject.Version, utils.GlobalObject.ServerIp, utils.GlobalObject.ServerPort)
@@ -49,10 +49,10 @@ func (this *Server) Start() {
 			conn, err := listener.AcceptTCP()
 			if err != nil {
 				fmt.Println("accept err:", err)
-				return
+				continue
 			}
 			// 封装链接对象
-			dealConn := NewConnection(cid, conn, this.Router)
+			dealConn := NewConnection(cid, conn, this.MsgHandler)
 			// 异步启动客户端
 			go dealConn.Start()
 			cid++
@@ -60,12 +60,12 @@ func (this *Server) Start() {
 	}()
 }
 
-// 关闭服务器
+// Stop 关闭服务器
 func (this *Server) Stop() {
 	fmt.Println("server stop")
 }
 
-// 运行服务器
+// Serve 运行服务器
 func (this *Server) Serve() {
 	// 启动服务器
 	this.Start()
@@ -76,6 +76,7 @@ func (this *Server) Serve() {
 	select {}
 }
 
-func (this *Server) AddRouter(router ziface.IRouter) {
-	this.Router = router
+// AddRouter 添加路由
+func (this *Server) AddRouter(msgId uint32, router ziface.IRouter) {
+	this.MsgHandler.AddRouter(msgId, router)
 }

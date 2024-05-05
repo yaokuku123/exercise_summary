@@ -15,11 +15,26 @@ type PingRouter struct {
 	znet.Router
 }
 
-// 主处理
+// 注册处理器1
 func (this *PingRouter) Handle(request ziface.IRequest) {
 	//先读取客户端的数据，再回写ping...ping...ping
-	fmt.Println("recv from client : msgId=", request.GetMsgID(), ", data=", string(request.GetData()))
-	err := request.GetConnection().SendMsg(1, []byte("ping...ping...ping..."))
+	fmt.Println("===> recv from client : msgId=", request.GetMsgID(), ", data=", string(request.GetData()))
+	err := request.GetConnection().SendMsg(201, []byte("ping...ping...ping..."))
+	if err != nil {
+		fmt.Println("send err:", err)
+		return
+	}
+}
+
+// 注册处理器2
+type HelloRouter struct {
+	znet.Router
+}
+
+func (this *HelloRouter) Handle(request ziface.IRequest) {
+	//先读取客户端的数据，再回写ping...ping...ping
+	fmt.Println("===> recv from client : msgId=", request.GetMsgID(), ", data=", string(request.GetData()))
+	err := request.GetConnection().SendMsg(202, []byte("hello world..."))
 	if err != nil {
 		fmt.Println("send err:", err)
 		return
@@ -30,7 +45,8 @@ func TestServer(t *testing.T) {
 	// 启动服务端
 	server := znet.NewServer()
 	// 添加自定义路由
-	server.AddRouter(&PingRouter{})
+	server.AddRouter(0, &PingRouter{})
+	server.AddRouter(1, &HelloRouter{})
 	// 启动客户端
 	go func() {
 		time.Sleep(3 * time.Second)
@@ -43,7 +59,7 @@ func TestServer(t *testing.T) {
 		for {
 			// 向服务端写数据-封包消息
 			dp := znet.NewDataPack()
-			binaryMsg, err := dp.Pack(znet.NewMessage(2, []byte("hello zinx server")))
+			binaryMsg, err := dp.Pack(znet.NewMessage(1, []byte("hello zinx server")))
 			if err != nil {
 				fmt.Println("pack err:", err)
 				return
