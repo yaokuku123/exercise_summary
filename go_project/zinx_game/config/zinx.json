@@ -1,6 +1,6 @@
 {
   "Name": "my zinx server",
   "Version": "v0.7",
-  "ServerIp": "127.0.0.1",
+  "ServerIp": "0.0.0.0",
   "ServerPort": 8999
 }
