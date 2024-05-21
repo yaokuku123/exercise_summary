@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>class02</title>
+</head>
+<body>
+    <!-- 表格标签
+    table:表格标签
+    tr：每行标签（table row）
+    th：表头标签（table head）
+    td：每格标签（table data）
+    表格结构标签
+    thead：表头标签
+    tbody：表体标签
+
+    表格属性（了解，后面使用css）
+    align：left,center,right 规定表格的对齐方式
+    border：默认""，规定表格单元是否有边距
+    cellpadding: 规定单元边沿与其内容之间的空白，默认1像素
+    cellspacing：规定单元格之间的空白，默认2像素
+    width：规定表格的宽度
+    -->
+    <table align="center" border="1" cellpadding="0" cellspacing="0" width="500">
+        <thead>
+            <tr><th>name</th> <th>gender</th> <th>age</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>yorick</td> <td>male</td> <td>27</td></tr>
+            <tr><td>tom</td> <td>male</td> <td>20</td></tr>
+            <tr><td>lily</td> <td>femal</td> <td>18</td></tr>
+        </tbody>
+    </table>
+    <br>
+
+    <!--
+    表格合并：
+    colspan：跨列合并
+    rowspan：跨行合并
+    1.先确定是跨行还是跨列
+    2.找到目标单元格（跨行找最上面的格子，跨列找最左边的格子），写上合并方式=合并单元格数量
+    3.删除多余的单元格
+    -->
+    <table align="center" border="1" cellpadding="0" cellspacing="0" width="500" height="250">
+        <tr>
+            <td></td>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td rowspan="2"></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+    <!--
+    无序列表标签
+    ul：无序列表
+    li：列表的每个项
+    说明：
+    ul中只能嵌套li，不允许在ul中输入其他标签或者文字
+    li相当于一个容器，可以容纳所有元素。可以放任何东西
+    -->
+    <ul>
+        <li>Java</li>
+        <li>C/C++</li>
+        <li>Python</li>
+    </ul>
+
+    <!--
+    有序列表标签：有顺序，li里面可以包含任意标签
+    ol：有序列表（ordered list）
+    li：列表的每个项
+    -->
+    <ol>
+        <li>篮球</li>
+        <li>足球</li>
+        <li>羽毛球</li>
+    </ol>
+
+    <!--
+        自定义列表标签：dl只能包含dt和dd，dt和dd里面可以包含任意标签
+        dl：自定义列表
+        dt：自定义列表头
+        dd：自定义列表数据
+     -->
+    <dl>
+        <dt>关于我们</dt>
+        <dd>公司简介</dd>
+        <dd>部门架构</dd>
+        <dd>招聘信息</dd>
+    </dl>
+
+    <!--
+        表单标签
+        完整的表单包括：表单域，表单控件（表单元素）和提示信息三部分构成
+    -->
+    <!--
+        form定义表单域，实现用户信息的收集和传递
+        属性：
+        action：指定接收和处理表单的服务器程序url地址
+        method：设置表单数据的提交方式，get or post
+        name：指定表单名称，区分页面中的多个表单域
+     -->
+    <form action="http://localhost:8080" method="post" name="form1">
+        <!-- text 文本框 用户可以输入文字 maxlength限制输入长度  -->
+        用户名：<input type="text" value="请输入用户名" maxlength="6"> <br>
+        <!-- password 密码框 用户可以输入密码  -->
+        密码：<input type="password"> <br>
+        <!-- radio 单选框 可以实现多选一
+        name 相同才可以实现多选一
+        value 表明选择的值，用于后端
+        checked 默认选择
+        -->
+        性别：<input type="radio" name="gender" value="male"> 男 <input type="radio" name="gender" value="female" checked> 女 <br>
+        <!-- checkbox 复选框 可以实现多选 -->
+        爱好：<input type="checkbox" name="hobby" value="sleep" checked> 睡觉 <input type="checkbox" name="hobby" value="eat"> 吃饭 <input type="checkbox" name="hobby" value="game"> 打游戏 <br>
+        <!-- select 下拉列表标签，至少包含一对option标签，selectde为默认选中项 -->
+        <select>
+            <option>北京</option>
+            <option selected>上海</option>
+            <option>广州</option>
+        </select> <br>
+        <!-- textarea 文本域，cols表示一行的显示字符，rows表示显示多少行 -->
+        今日反馈:<textarea cols="10" rows="5">请输入文字</textarea> <br>
+        <!-- button 普通按钮，后期结合js使用 -->
+        <input type="button" value="获取短信验证码"> <br>
+        <!-- file 文件上传按钮，上传文件使用 -->
+        上传头像：<input type="file"> <br>
+        <!-- submit 提交按钮，可以把表单域form中的表单元素值提交给服务器 -->
+        <input type="submit" value="注册">
+        <!-- reset 重置按钮，恢复表单元素为初始默认值 -->
+        <input type="reset" value="重置">
+    </form>
+
+
+    <!--
+        label标签：与input标签搭配使用，当点击label标签的文本时，浏览器会自动聚焦对应的表单元素上
+        标签的for属性应当与相关元素的id属性相同
+    -->
+    <form action="http://localhost:8080" method="post" name="form2" >
+        <label for="username">用户名：</label>
+        <input id="username" type="text"> <br>
+
+        <input id="male" type="radio" name="gender" value="male">
+        <label for="male">男</label>
+        <input id="female" type="radio" name="gender" value="female">
+        <label for="female">女</label>
+    </form>
+
+</body>
+</html>
