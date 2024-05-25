@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .bg-color {
+            width: 200px;
+            height: 200px;
+            /*背景颜色 默认透明transparent*/
+            background-color: pink;
+        }
+        .bg-a {
+            width: 200px;
+            height: 200px;
+            /*设置背景的透明度*/
+            background: rgba(0,0,0,.5);
+        }
+        .bg-img {
+            width: 200px;
+            height: 200px;
+            /*背景图片*/
+            background-image: url("images/logo.png");
+            /*背景图片平铺 默认平铺repeat 不平铺no-repeat，*/
+            background-repeat: no-repeat;
+            /*背景位置*/
+            /*如果两个词都是方位名次则顺序无关，left top 和 top left效果一致*/
+            /*如果只指定类一个方位名次，另一个省略，则第二个默认居中对齐*/
+            /*如果精确时，前x轴，后y轴，不能改变顺序*/
+            background-position: center top;
+        }
+        body {
+            /*background-image: url("images/bg.jpg");*/
+            /*background-repeat: no-repeat;*/
+            /*background-position: center top;*/
+            /*background-color: black;*/
+            /*!*背景图像固定 fixed，默认scroll滚动*!*/
+            /*background-attachment: fixed;*/
+
+            /*背景设置的复合写法*/
+            background: black url("images/bg.jpg") no-repeat fixed center top;
+            color: #fff;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-color"></div>
+    <div class="bg-a"></div>
+    <div class="bg-img"></div>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+    <p>一段话</p>
+</body>
+</html>

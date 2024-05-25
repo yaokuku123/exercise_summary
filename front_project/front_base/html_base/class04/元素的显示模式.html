@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        /*  div h1~h6
+            html元素分为块元素和行内元素
+            块元素的特点：
+            1.独占一行
+            2.高度，宽度，外边距以及内边距可控
+            3.宽度默认是容器（父级宽度）的100%
+            4.是一个容器盒子，里面可以放行内或者块级元素
+            注意：
+            1.文字类的元素内不能使用块级元素
+            2.p标签不能放块级元素，例如div
+            3.h1～h6都是文字类的块级标签，不能放其他块级元素
+         */
+        div {
+            background-color: pink;
+            width: 200px;
+            height: 50px;
+        }
+        /*  span p
+            行内元素特点：
+            1.相邻行内元素在一行，一行可以显示多个
+            2.高，宽直接设置无效
+            3.默认宽度就是它本身内容的宽度
+            4.行内元素只能容纳文本或其他行内元素
+         */
+
+        /*  img input td
+            行内块元素特点：
+            1.相邻行内元素在一行（行内元素特点）
+            2.默认宽度是它本身内容的宽度（行内元素特点）
+            3.高度，行高，内外边距都可以控制（块级元素特点）
+         */
+
+        /*行内与块级元素转换 块：block 行内：inline*/
+        a {
+            background-color: pink;
+            width: 100px;
+            height: 50px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div>hello</div>
+    <!--    另起一行显示-->
+    nihao
+    <br>
+
+    <span>yorick</span> <span>tom</span> <span>jerry</span>
+
+    <a href="#">金星阿姨</a>
+</body>
+</html>

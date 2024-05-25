@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        /*后代选择器：把ol里面的li选出来改变颜色*/
+        /*元素1和元素2之间用空格分隔；*/
+        /*元素1是父级，元素2是子级，最终选择的是元素2；*/
+        /*元素2可以是子级也可以是孙子级，只要是元素1的后代即可*/
+        ol li {
+            color: pink;
+        }
+
+        /*子选择器：只能选择最近一级的子元素*/
+        /*元素1和元素2之间用>分隔；*/
+        .nav>a {
+            color: pink;
+        }
+
+        /*并级选择器：选择多组标签*/
+        /*元素1和元素2之间用,分隔；*/
+        .xiong1,
+        .xiong2 {
+            color: red;
+        }
+
+        /*伪类选择器：添加特殊效果*/
+        /*用冒号表示*/
+        /*选择所有未被访问的链接*/
+        a:link {
+            color: black;
+            text-decoration: none;
+        }
+        /*选择所有已被访问的链接*/
+        a:visited {
+            color: orange;
+        }
+        /*选择鼠标hover的链接*/
+        a:hover {
+            color: skyblue;
+        }
+        /*选择鼠标按下未弹起的链接*/
+        a:active {
+            color: green;
+        }
+
+        /*:foucs选择器:选取获取焦点的表单*/
+        input:focus {
+            background-color: pink;
+        }
+    </style>
+</head>
+<body>
+<!--    复合选择器是由两个或多个基础选择器，通过不同方式组合而成的。-->
+<!--    主要包括：后代选择器，子选择器，并集选择器，伪类选择器-->
+    <ol>
+        <li>ol li</li>
+        <li>ol li</li>
+        <li>ol li</li>
+    </ol>
+    <ul>
+        <li>ul li</li>
+        <li>ul li</li>
+        <li>ul li</li>
+    </ul>
+
+    <div class="nav">
+        <a href="#">son</a>
+        <p>
+            <a href="#">son son</a>
+        </p>
+    </div>
+
+    <div class="xiong1">熊大</div>
+    <p class="xiong2">熊二</p>
+
+    <a href="#">小猪佩奇</a> <br>
+
+    <input type="text"> <input type="text"> <input type="text">
+</body>
+</html>
