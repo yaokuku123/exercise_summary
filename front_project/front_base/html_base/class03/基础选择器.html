@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>class03</title>
+    <style>
+        /*标签选择器：通过标签名获取*/
+        p {
+            color: pink;
+        }
+        /*
+        类选择器：差异化选择标签，单独选择某几个标签
+        样式点定义，结构类class调用，一个或多个
+        */
+        .language {
+            color: skyblue;
+        }
+        /*多类名选择器，给某个标签添加多个类，使得标签可以分别具有这些类的样式*/
+        .pink {
+            color: pink;
+        }
+        .font35 {
+            font-size: 35px;
+        }
+        /*id选择器：选择标有特定id的标签指定样式*/
+        #star {
+            color: red;
+        }
+        /*通配符选择器：选取页面所有标签*/
+        * {
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+<!--基础选择器：标签选择器，类选择器，id选择器，通配符选择器-->
+    <p>hello world</p>
+
+    <ul>
+        <li class="language">Java</li>
+        <li>C/C+</li>
+        <li class="language">Python</li>
+    </ul>
+
+    <div class="pink font35">Yorick</div>
+
+    <div id="star">刘德华</div>
+</body>
+</html>
