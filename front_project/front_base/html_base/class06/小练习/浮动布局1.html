@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            list-style: none;
+        }
+        .box {
+            width: 1226px;
+            height: 285px;
+            background-color: pink;
+            margin: 0 auto;
+        }
+        /*li浮动*/
+        .box li {
+            float: left;
+            width: 296px;
+            height: 285px;
+            background-color: skyblue;
+            margin-right: 14px;
+        }
+        /*最后一个li去除有边距*/
+        .box li:nth-child(n+4) {
+            margin-right: 0;
+        }
+    </style>
+</head>
+<body>
+<ul class="box">
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+</ul>
+</body>
+</html>

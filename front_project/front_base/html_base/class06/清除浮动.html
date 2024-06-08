@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        /*清除浮动之双伪元素清除*/
+        .clearfix:before,.clearfix:after {
+            content: "";
+            display: table;
+        }
+        .clearfix:after {
+            clear: both;
+        }
+        .clearfix {
+            *zoom: 1;
+        }
+        .box {
+            /*父盒子没有设置高度*/
+            width: 800px;
+            border: 1px solid blue;
+            margin: 0 auto;
+        }
+
+        .damao {
+            /*子盒子浮动*/
+            float: left;
+            width: 300px;
+            height: 200px;
+            background-color: purple;
+        }
+
+        .ermao {
+            float: left;
+            width: 200px;
+            height: 200px;
+            background-color: pink;
+        }
+
+        /*影响footer的布局*/
+        .footer {
+            height: 200px;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+<!--
+ 清除浮动的原因：
+ 1.父级没有高度
+ 2.子盒子浮动
+ 3.影响下面的布局
+
+ 清除浮动本质：清除浮动对于下面布局的影响
+
+-->
+<div class="box clearfix">
+    <div class="damao">大毛</div>
+    <div class="ermao">二毛</div>
+</div>
+<div class="footer"></div>
+</body>
+</html>
