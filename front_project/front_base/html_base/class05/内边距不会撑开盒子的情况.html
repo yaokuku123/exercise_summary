@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        /*如果盒子本身没有指定width/height属性，则padding不会撑开盒子大小*/
+        h1 {
+            /*如果设置了width属性，则宽度会被撑开*/
+            /*width: 100%;*/
+            height: 200px;
+            background-color: pink;
+            /*没有width属性，所以宽度不会被撑开*/
+            padding: 100px;
+        }
+        div {
+            width: 300px;
+            height: 100px;
+            background-color: skyblue;
+        }
+        div p {
+            /*添加了这个width属性，则会撑开盒子*/
+            /*width: 100%;*/
+            /*不会撑开宽度的盒子*/
+            padding: 30px;
+            background-color: purple;
+        }
+    </style>
+</head>
+<body>
+    <h1></h1>
+    <div>
+        <p></p>
+    </div>
+
+</body>
+</html>
