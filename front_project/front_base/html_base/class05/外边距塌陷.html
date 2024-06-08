@@ -8,7 +8,6 @@
             width: 400px;
             height: 400px;
             background-color: purple;
-            margin: 50px;
             /*避免父元素的外边距塌陷*/
             overflow: hidden;
         }
@@ -16,7 +15,7 @@
             width: 200px;
             height: 200px;
             background-color: pink;
-            /*两个嵌套关系的块元素，父子均有设置外边距，导致父元素的外边距塌陷*/
+            /*两个嵌套关系的块元素，子设置外边距，导致父元素的外边距塌陷*/
             margin-top: 100px;
         }
     </style>
