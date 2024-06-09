@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        @font-face {
+            font-family: 'icomoon';
+            src: url('fonts/icomoon.eot?9jwvyp');
+            src: url('fonts/icomoon.eot?9jwvyp#iefix') format('embedded-opentype'),
+            url('fonts/icomoon.ttf?9jwvyp') format('truetype'),
+            url('fonts/icomoon.woff?9jwvyp') format('woff'),
+            url('fonts/icomoon.svg?9jwvyp#icomoon') format('svg');
+            font-weight: normal;
+            font-style: normal;
+            font-display: block;
+        }
+
+        ul li {
+            width: 50px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+        }
+
+        /*1.属性选择器*/
+        ul li[class=l3] {
+            background-color: pink;
+        }
+
+        /*2.结构伪类选择器*/
+        /*奇数位置字体颜色改变*/
+        ul li:nth-child(2n+1) {
+            color: skyblue;
+        }
+
+        /*头尾li的字体加粗*/
+        ul li:first-child,
+        ul li:last-child {
+            font-weight: 700;
+        }
+
+        p {
+            position: relative;
+            width: 200px;
+            height: 30px;
+            border: 1px solid #333333;
+        }
+
+        /*3.伪元素选择器*/
+        p::after {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-family: 'icomoon';
+            content: '\e901';
+        }
+    </style>
+</head>
+<body>
+<ul>
+    <li class="l1">1</li>
+    <li class="l2">2</li>
+    <li class="l3">3</li>
+    <li class="l4">4</li>
+    <li class="l5">5</li>
+</ul>
+
+<p></p>
+</body>
+</html>
