@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .box {
+            position: relative;
+            width: 520px;
+            height: 280px;
+            margin: 100px auto;
+        }
+
+        .box img {
+            width: 100%;
+        }
+
+        .left {
+            position: absolute;
+            top: 125px;
+            left: 0;
+            width: 20px;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+            font-size: 14px;
+            color: #fff;
+            text-align: center;
+            line-height: 30px;
+            text-decoration: none;
+        }
+
+        .right {
+            position: absolute;
+            top: 130px;
+            right: 0;
+            width: 20px;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+            font-size: 14px;
+            color: #fff;
+            text-align: center;
+            line-height: 30px;
+            text-decoration: none;
+        }
+
+        .promo-nav {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            margin-left: -35px;
+            width: 70px;
+            height: 13px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 7px;
+        }
+
+        .promo-nav li {
+            float: left;
+            width: 8px;
+            height: 8px;
+            background-color: #fff;
+            border-radius: 4px;
+            margin: 3px;
+        }
+
+        /*注意选择器的优先级*/
+        .promo-nav .selected {
+            background-color: #ff5000;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <img src="images/tb.jpg" alt="">
+    <a href="#" class="left">&lt;</a>
+    <a href="#" class="right">&gt;</a>
+    <ul class="promo-nav">
+        <li class="selected"></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+</body>
+</html>
