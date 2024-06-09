@@ -101,6 +101,11 @@ a {
     color: #666;
 }
 
+.user img {
+    /*图片和文字中线对齐*/
+    vertical-align: middle;
+}
+
 .banner {
     height: 421px;
     background-color: #1c036c;
