@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            background-color: #ccc;
+        }
+
+        .bear-box {
+            position: absolute;
+            width: 200px;
+            height: 100px;
+            margin: 50px auto;
+            background: url("media/bear.png") no-repeat;
+            /*添加两款动画；一个是小熊奔跑关键帧动画；一个是屏幕移动动画*/
+            /*一共长度1600px，拆分为8步，每步移动200px*/
+            animation: bear 1s steps(8) infinite, move 2s forwards;
+        }
+
+        @keyframes bear {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: -1600px 0;
+            }
+        }
+
+        @keyframes move {
+            0% {
+                left: 0;
+            }
+            100% {
+                /*跑到屏幕的中线*/
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="bear-box"></div>
+</body>
+</html>

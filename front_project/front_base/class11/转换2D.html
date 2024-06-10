@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 3000px;
+        }
+
+        .d1 {
+            width: 200px;
+            height: 200px;
+            background-color: pink;
+            /*translate最大的特点是移动后不会影响其他元素的位置*/
+            transform: translate(30px, 30px);
+
+            /*沿X或Y轴移动*/
+            /*transform: translateX(30px);*/
+            /*transform: translateY(30px);*/
+        }
+
+        .d2 {
+            width: 200px;
+            height: 200px;
+            background-color: skyblue;
+        }
+
+        .big {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            background-color: pink;
+        }
+
+        .small {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            background-color: skyblue;
+            /*不写死 %表示相对于自身大小的百分比*/
+            transform: translate(-50%, -50%);
+        }
+
+        .rotatedemo {
+            width: 150px;
+            border-radius: 75px;
+            border: 5px solid pink;
+            /*添加旋转的动画过渡*/
+            transition: transform 1s ease .5s;
+        }
+
+        .rotatedemo:hover {
+            /*旋转360度
+            注意：
+            1.单位是deg表示度
+            2.正数顺时针，负数逆时针
+            */
+            transform: rotate(360deg);
+        }
+
+        .rotatedemo2 {
+            position: relative;
+            width: 250px;
+            height: 40px;
+            border: 1px solid #000;
+        }
+
+        .rotatedemo2::after {
+            position: absolute;
+            top: 8px;
+            right: 15px;
+            content: "";
+            width: 10px;
+            height: 10px;
+            /*制作一个正方形，并给右/底边框，形成一个箭头*/
+            border-right: 1px solid #000;
+            border-bottom: 1px solid #000;
+            /*把形成的箭头旋转45度，形成下箭头*/
+            transform: rotate(45deg);
+            /*添加过渡*/
+            transition: all .2s;
+        }
+
+        .rotatedemo2:hover::after {
+            /*鼠标经过dev后，箭头指向上方*/
+            transform: rotate(225deg);
+        }
+
+        .rotatedemo3 {
+            width: 200px;
+            height: 200px;
+            background-color: skyblue;
+            margin: 100px auto;
+            transition: all 1s;
+            /*1.默认的中心点为 50% 50% => center center*/
+            /*2.可以设置方位名词*/
+            /*transform-origin: left bottom;*/
+            /*3.可以设置精确值*/
+            transform-origin: 50px 50px;
+        }
+
+        .rotatedemo3:hover {
+            transform: rotate(360deg);
+        }
+
+        .box {
+            height: 220px;
+        }
+
+        .rotatedemo4 {
+            overflow: hidden;
+            float: left;
+            width: 200px;
+            height: 200px;
+            border: 1px solid pink;
+            margin: 10px;
+        }
+
+        .rotatedemo4::before {
+            display: block;
+            content: "";
+            width: 200px;
+            height: 200px;
+            background-color: skyblue;
+            /*设置旋转中心点为左下角*/
+            transform-origin: left bottom;
+            transform: rotate(180deg);
+            transition: all 0.4s;
+        }
+
+        .rotatedemo4:hover::before {
+            /*鼠标经过时恢复显示*/
+            transform: rotate(0deg);
+        }
+
+        .scaledemo1 {
+            width: 200px;
+            height: 200px;
+            background-color: pink;
+            margin: 0 auto;
+            /*固定左下角不动进行缩放*/
+            transform-origin: left bottom;
+        }
+
+        .scaledemo1:hover {
+            /*1.scale中的参数表示缩放的倍数*/
+            /*2.写一个参数表示宽和高等比例缩放*/
+            /*3.scala的优势：可以设置中心点缩放（默认以中心缩放），不影响其他盒子*/
+            transform: scale(0.5, 0.5);
+        }
+
+        .scaledemo2 {
+            float: left;
+            width: 225px;
+            height: 137px;
+            margin: 10px;
+            /*超出部分隐藏*/
+            overflow: hidden;
+        }
+
+        .scaledemo2 img {
+            给img添加过渡效果
+            transition: all .3s;
+        }
+
+        .scaledemo2 img:hover {
+            /*缩放1.1倍*/
+            transform: scale(1.1);
+        }
+
+        .scaledemo3 ul li {
+            float: left;
+            width: 30px;
+            height: 30px;
+            margin: 10px;
+            border: 1px solid pink;
+            list-style: none;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.4s;
+        }
+
+        .scaledemo3 ul li:hover {
+            transform: scale(1.2);
+        }
+
+        .demo-2d {
+            width: 100px;
+            height: 100px;
+            background-color: pink;
+            transition: all .5s;
+        }
+        .demo-2d:hover {
+            /*多个转换方式时候，将位移方式写在前面*/
+            transform: translate(200px,200px) rotate(180deg) scale(2);
+        }
+
+    </style>
+</head>
+<body>
+
+<!--1.translate使用-->
+<h2>1.translate使用</h2>
+<div class="d1"></div>
+<div class="d2"></div>
+
+<!--2.使用translate实现子盒子的居中-->
+<h2>2.使用translate实现子盒子的居中</h2>
+<div class="big">
+    <div class="small"></div>
+</div>
+
+<!--3.图片旋转-->
+<h2>3.图片旋转</h2>
+<img class="rotatedemo" src="media/pic.jpg" alt="">
+
+<!--4.旋转练习，下拉图标的制作-->
+<h2>4.旋转练习，下拉图标的制作</h2>
+<div class="rotatedemo2"></div>
+
+<!--5.旋转中心点设置-->
+<h2>5.旋转中心点设置</h2>
+<div class="rotatedemo3"></div>
+
+<!--6.旋转中心点的案例-->
+<h2>6.旋转中心点的案例</h2>
+<div class="box">
+    <div class="rotatedemo4"></div>
+    <div class="rotatedemo4"></div>
+    <div class="rotatedemo4"></div>
+</div>
+
+<!--7.缩放-->
+<h2>7.缩放</h2>
+<div class="scaledemo1"></div>
+</body>
+
+<!--8.缩放案例-->
+<h2>8.缩放案例</h2>
+<div class="box">
+    <div class="scaledemo2"><a href=""><img src="media/scale.jpg" alt=""></a></div>
+    <div class="scaledemo2"><a href=""><img src="media/scale.jpg" alt=""></a></div>
+    <div class="scaledemo2"><a href=""><img src="media/scale.jpg" alt=""></a></div>
+</div>
+
+<!--9.缩放实现分页按钮-->
+<h2>9.缩放实现分页按钮</h2>
+<div class="box scaledemo3">
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+        <li>7</li>
+    </ul>
+</div>
+
+<!--10.2D转换的综合写法-->
+<h2>10.2D转换的综合写法</h2>
+<div class="demo-2d"></div>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            /*给父盒子加透视，下面的都生效*/
+            perspective: 800px;
+        }
+
+        .box1 {
+            /*给父盒子设置透视*/
+            perspective: 500px;
+            text-align: center;
+        }
+
+        .box1 img {
+            width: 200px;
+            height: 200px;
+            transition: all 1s;
+        }
+
+        .box1 img:hover {
+            /*左手法则，大拇指指向右，四指弯曲方向为X轴旋转的正方向*/
+            transform: rotateX(45deg);
+        }
+
+        .box2 {
+            perspective: 500px;
+            text-align: center;
+        }
+
+        .box2 img {
+            width: 200px;
+            height: 200px;
+            transition: all 1s;
+        }
+
+        .box2 img:hover {
+            /*左手法则，大拇指指向下，四指弯曲方向为Y轴旋转的正方向*/
+            transform: rotateY(45deg);
+        }
+
+        .box3 {
+            text-align: center;
+        }
+
+        .box3 img {
+            width: 200px;
+            height: 200px;
+            transition: all 1s;
+        }
+
+        .box3 img:hover {
+            /*左手法则，大拇指指向屏幕前，四指弯曲方向为Z轴旋转的正方向，Z轴旋转不需要透视*/
+            transform: rotateZ(45deg);
+        }
+
+        .box4 {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            transition: all 2s;
+            /*给父盒子加3D呈现，使得子盒子可以保持3D效果*/
+            transform-style: preserve-3d;
+        }
+
+        .box4:hover {
+            /*Y轴旋转*/
+            transform: rotateY(45deg);
+        }
+
+        .box4 div {
+            /*两个div叠在一起加定位*/
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: pink;
+        }
+
+        .box4 div:last-child {
+            background-color: purple;
+            /*X轴旋转*/
+            transform: rotateX(60deg);
+        }
+
+
+        .box5 {
+            perspective: 500px;
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            transition: all 5s;
+            /*保留子盒子的3D效果*/
+            transform-style: preserve-3d;
+        }
+
+        .box5:hover {
+            /*旋转180度*/
+            transform: rotateY(180deg);
+        }
+
+        .front,
+        .back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            font-size: 30px;
+            color: #fff;
+            text-align: center;
+            line-height: 300px;
+            /*背面朝向用户时隐藏*/
+            backface-visibility: hidden;
+        }
+
+        .front {
+            background-color: pink;
+        }
+
+        .back {
+            background-color: purple;
+            /*先旋转180度背朝用户*/
+            transform: rotateY(180deg);
+        }
+
+    </style>
+</head>
+<body>
+<h2>1.X轴旋转</h2>
+<div class="box1">
+    <img src="media/pig.jpg" alt="">
+</div>
+
+<h2>2.Y轴旋转</h2>
+<div class="box2">
+    <img src="media/pig.jpg" alt="">
+</div>
+
+<h2>3.Z轴旋转</h2>
+<div class="box3">
+    <img src="media/pig.jpg" alt="">
+</div>
+
+<h2>4.3D呈现</h2>
+<div class="box4">
+    <div></div>
+    <div></div>
+</div>
+
+<h2>5.两面翻转盒子</h2>
+<div class="box5">
+    <div class="front">hello world</div>
+    <div class="back">good good work</div>
+</div>
+</body>
+</html>

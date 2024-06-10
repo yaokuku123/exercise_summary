@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        /*定义动画*/
+        @keyframes move {
+            /*from 和 to 等价于 0% 100%*/
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(1000px);
+            }
+        }
+
+        /*定义动画-绕着屏幕走一圈*/
+        @keyframes complex-move {
+            0% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(500px, 0);
+            }
+            50% {
+                transform: translate(500px, 300px);
+            }
+            75% {
+                transform: translate(0px, 300px);
+            }
+            100% {
+                transform: translate(0px, 0px);
+            }
+        }
+
+        .animationdemo1 {
+            width: 100px;
+            height: 100px;
+            background-color: pink;
+            /*调用动画*/
+            /*动画名称*/
+            animation-name: move;
+            /*动画持续时间*/
+            animation-duration: 2s;
+        }
+
+        .animationdemo2 {
+            width: 100px;
+            height: 100px;
+            background-color: skyblue;
+            animation-name: complex-move;
+            animation-duration: 5s;
+        }
+
+        .animationdemo3 {
+            width: 100px;
+            height: 100px;
+            background-color: green;
+            /*动画名称*/
+            animation-name: move;
+            /*动画持续时常*/
+            animation-duration: 2s;
+            /*动画速度曲线*/
+            animation-timing-function: ease;
+            /*动画开始延迟*/
+            animation-delay: 1s;
+            /*动画重复次数 默认1次，infinite表示无数次*/
+            animation-iteration-count: infinite;
+            /*动画是否逆向播放 默认normal，alternate表示逆向*/
+            animation-direction: alternate;
+            /*动画结束后的状态 默认回到原点backwards, 可以设置为停留在终点 forwards*/
+            animation-fill-mode: forwards;
+        }
+
+        .animationdemo3:hover {
+            /*hover后动画暂停 默认运行running 暂停 paused*/
+            animation-play-state: paused;
+        }
+
+        .animationdemo4 {
+            overflow: hidden;
+            width: 0;
+            height: 30px;
+            background-color: pink;
+            font-size: 20px;
+            white-space: nowrap;
+            /*steps 动画分成10步执行完毕*/
+            animation: w 5s steps(10) forwards;
+        }
+
+        @keyframes w {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 200px;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+<!--1.动画初-->
+<h2>1.动画初</h2>
+<div class="animationdemo1"></div>
+<!--2.定义动画-绕着屏幕走一圈-->
+<h2>2.定义动画-绕着屏幕走一圈</h2>
+<div class="animationdemo2"></div>
+<!--3.动画属性-->
+<h2>3.动画属性</h2>
+<div class="animationdemo3"></div>
+<!--4.steps打字机-->
+<h2>4.steps打字机</h2>
+<div class="animationdemo4">攻程老师我在这里等你</div>
+</body>
+</html>
