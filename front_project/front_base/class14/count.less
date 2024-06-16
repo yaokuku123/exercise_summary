@@ -1,0 +1,20 @@
+// 1.运算符号的两侧要有空格
+// 2.两个参与运算，如果只有一个有单位，则结果以该单位为准
+// 3.两个参与运算，如果均有单位，则以第一个单位为准
+// 4.新版本的 /，需要改写为 ./
+@baseFont: 50px;
+@border: 2px + 5;
+html {
+  font-size: @baseFont;
+}
+
+div {
+  width: (50px + 2) ./ 10;
+  height: 200px * 2;
+  border: @border solid red;
+}
+
+img {
+  width: 80rem ./ @baseFont;
+  height: 80rem ./ @baseFont;
+}

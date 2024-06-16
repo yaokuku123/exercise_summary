@@ -1,0 +1,23 @@
+.box {
+  width: 200px;
+  height: 200px;
+  background-color: pink;
+  //选择器的嵌套
+  a {
+    color: red;
+    // 伪类/伪元素/交集选择器需求前面添加&
+    &:hover {
+      color: green;
+    }
+  }
+}
+
+.nav {
+  .logo {
+    color: skyblue;
+
+    &::after {
+      content: "";
+    }
+  }
+}
