@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/gin-mall" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/web_gin/bubble_project/bubble_frontend" vcs="Git" />
   </component>
 </project>
