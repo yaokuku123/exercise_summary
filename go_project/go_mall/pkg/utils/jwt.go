@@ -14,6 +14,14 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
+type EmailClaims struct {
+	UserID        uint   `json:"user_id"`
+	Email         string `json:"email"`
+	Password      string `json:"password"`
+	OperationType uint   `json:"operation_type"`
+	jwt.StandardClaims
+}
+
 func GenerateToken(id uint, username string, authority int) (tokenString string, err error) {
 	nowTime := time.Now()
 	expireTime := nowTime.Add(24 * time.Hour)
@@ -44,4 +52,22 @@ func ParseToken(token string) (*Claims, error) {
 		}
 	}
 	return nil, err
+}
+
+func EmailGenerateToken(uId, operationType uint, email, password string) (tokenString string, err error) {
+	nowTime := time.Now()
+	expireTime := nowTime.Add(24 * time.Hour)
+	claims := EmailClaims{
+		UserID:        uId,
+		Email:         email,
+		Password:      password,
+		OperationType: operationType,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expireTime.Unix(),
+			Issuer:    "go_mall",
+		},
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err = token.SignedString(jwtSecret)
+	return tokenString, err
 }

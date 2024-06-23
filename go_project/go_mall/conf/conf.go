@@ -30,6 +30,7 @@ var (
 
 	ValidEmail string
 	SmtpHost   string
+	SmtpPort   string
 	SmtpEmail  string
 	SmtpPass   string
 
@@ -96,6 +97,7 @@ func LoadQiniu(file *ini.File) {
 func LoadEmail(file *ini.File) {
 	ValidEmail = file.Section("email").Key("ValidEmail").String()
 	SmtpHost = file.Section("email").Key("SmtpHost").String()
+	SmtpPort = file.Section("email").Key("SmtpPort").String()
 	SmtpEmail = file.Section("email").Key("SmtpEmail").String()
 	SmtpPass = file.Section("email").Key("SmtpPass").String()
 }

@@ -49,3 +49,14 @@ func AvatarUpdate(c *gin.Context) {
 	res := userAvatarUpdate.AvatarUpdate(c.Request.Context(), claims.ID, file)
 	c.JSON(http.StatusOK, res)
 }
+
+func SendEmail(c *gin.Context) {
+	var userEmailService service.UserEmailService
+	claims, _ := utils.ParseToken(c.GetHeader("Authorization"))
+	if err := c.ShouldBind(&userEmailService); err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+	res := userEmailService.Send(c.Request.Context(), claims.ID)
+	c.JSON(http.StatusOK, res)
+}

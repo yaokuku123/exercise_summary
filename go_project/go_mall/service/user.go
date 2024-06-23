@@ -2,12 +2,16 @@ package service
 
 import (
 	"context"
+	"github.com/yaokuku123/exercise_summary/go_project/go_mall/conf"
 	"github.com/yaokuku123/exercise_summary/go_project/go_mall/dao"
 	"github.com/yaokuku123/exercise_summary/go_project/go_mall/model"
 	"github.com/yaokuku123/exercise_summary/go_project/go_mall/pkg/e"
 	"github.com/yaokuku123/exercise_summary/go_project/go_mall/pkg/utils"
 	"github.com/yaokuku123/exercise_summary/go_project/go_mall/serializer"
+	"gopkg.in/mail.v2"
 	"mime/multipart"
+	"strconv"
+	"strings"
 )
 
 type UserService struct {
@@ -15,6 +19,12 @@ type UserService struct {
 	UserName string `form:"user_name" json:"user_name"`
 	PassWord string `form:"password" json:"password"`
 	Key      string `form:"key" json:"key"`
+}
+
+type UserEmailService struct {
+	Email         string `form:"email" json:"email"`
+	Password      string `form:"password" json:"password"`
+	OperationType uint   `form:"operation_type" json:"operation_type"` // OpertionType 1:绑定邮箱 2：解绑邮箱 3：改密码
 }
 
 func (service *UserService) Register(ctx context.Context) serializer.Response {
@@ -179,5 +189,48 @@ func (service *UserService) AvatarUpdate(ctx context.Context, uId uint, file mul
 		Status: code,
 		Msg:    e.GetMsg(code),
 		Data:   serializer.BuildUser(user),
+	}
+}
+
+func (service *UserEmailService) Send(ctx context.Context, uId uint) serializer.Response {
+	code := e.SUCCESS
+	token, err := utils.EmailGenerateToken(uId, service.OperationType, service.Email, service.Password)
+	if err != nil {
+		code = e.ErrorAuthToken
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	noticeDao := dao.NewNoticeDao(ctx)
+	notice, err := noticeDao.GetNoticeById(service.OperationType)
+	if err != nil {
+		code = e.ErrorDatabase
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	address := conf.ValidEmail + token
+	mailStr := notice.Text
+	mailText := strings.Replace(mailStr, "Email", address, -1)
+	m := mail.NewMessage()
+	m.SetHeader("From", conf.SmtpEmail)
+	m.SetHeader("To", service.Email)
+	m.SetHeader("Subject", "yorick")
+	m.SetBody("text/html", mailText)
+	smptPort, _ := strconv.ParseInt(conf.SmtpPort, 10, 64)
+	d := mail.NewDialer(conf.SmtpHost, int(smptPort), conf.SmtpEmail, conf.SmtpPass)
+	err = d.DialAndSend(m)
+	if err != nil {
+		code = e.ErrorSendEmail
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	return serializer.Response{
+		Status: code,
+		Msg:    e.GetMsg(code),
 	}
 }
