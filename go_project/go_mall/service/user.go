@@ -7,6 +7,7 @@ import (
 	"github.com/yaokuku123/exercise_summary/go_project/go_mall/pkg/e"
 	"github.com/yaokuku123/exercise_summary/go_project/go_mall/pkg/utils"
 	"github.com/yaokuku123/exercise_summary/go_project/go_mall/serializer"
+	"mime/multipart"
 )
 
 type UserService struct {
@@ -131,6 +132,41 @@ func (service *UserService) UserUpdate(ctx context.Context, uId uint) serializer
 	if service.NickName != "" {
 		user.NickName = service.NickName
 	}
+	err = userDao.UpdateUserById(user.ID, user)
+	if err != nil {
+		code = e.ErrorDatabase
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	return serializer.Response{
+		Status: code,
+		Msg:    e.GetMsg(code),
+		Data:   serializer.BuildUser(user),
+	}
+}
+
+func (service *UserService) AvatarUpdate(ctx context.Context, uId uint, file multipart.File) serializer.Response {
+	code := e.SUCCESS
+	userDao := dao.NewUserDao(ctx)
+	user, err := userDao.GetUserById(uId)
+	if err != nil {
+		code = e.ErrorDatabase
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	path, err := utils.UploadAvatarToLocalStatic(file, uId, user.UserName)
+	if err != nil {
+		code = e.ErrorUploadFile
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	user.Avatar = path
 	err = userDao.UpdateUserById(user.ID, user)
 	if err != nil {
 		code = e.ErrorDatabase
