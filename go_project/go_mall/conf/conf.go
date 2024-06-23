@@ -1,6 +1,8 @@
 package conf
 
 import (
+	"fmt"
+
 	"gopkg.in/ini.v1"
 )
 
@@ -31,9 +33,9 @@ var (
 	SmtpEmail  string
 	SmtpPass   string
 
-	Host        string
-	ProductPath string
-	AvatarPath  string
+	Host             string
+	ProductPhotoPath string
+	AvatarPath       string
 
 	EsHost  string
 	EsPort  string
@@ -47,14 +49,26 @@ var (
 )
 
 func Init() {
-	file, err := ini.Load("conf/config.ini")
+	// 从本地读取环境变量
+	file, err := ini.Load("./conf/config.ini")
 	if err != nil {
-		panic(err)
+		fmt.Println("配置文件读取错误，请检查文件路径:", err)
 	}
 	LoadServer(file)
 	LoadMysqlData(file)
+	LoadQiniu(file)
 	LoadEmail(file)
+	LoadEs(file)
+	LoadPhotoPath(file)
+	LoadRabbitMQ(file)
 	LoadRedisData(file)
+}
+
+func LoadRedisData(file *ini.File) {
+	RedisDb = file.Section("redis").Key("RedisDb").String()
+	RedisAddr = file.Section("redis").Key("RedisAddr").String()
+	RedisPw = file.Section("redis").Key("RedisPw").String()
+	RedisDbName = file.Section("redis").Key("RedisDbName").String()
 }
 
 func LoadServer(file *ini.File) {
@@ -72,6 +86,13 @@ func LoadMysqlData(file *ini.File) {
 	DbName = file.Section("mysql").Key("DbName").String()
 }
 
+func LoadQiniu(file *ini.File) {
+	AccessKey = file.Section("qiniu").Key("AccessKey").String()
+	SerectKey = file.Section("qiniu").Key("SerectKey").String()
+	Bucket = file.Section("qiniu").Key("Bucket").String()
+	QiniuServer = file.Section("qiniu").Key("QiniuServer").String()
+}
+
 func LoadEmail(file *ini.File) {
 	ValidEmail = file.Section("email").Key("ValidEmail").String()
 	SmtpHost = file.Section("email").Key("SmtpHost").String()
@@ -79,9 +100,22 @@ func LoadEmail(file *ini.File) {
 	SmtpPass = file.Section("email").Key("SmtpPass").String()
 }
 
-func LoadRedisData(file *ini.File) {
-	RedisAddr = file.Section("redis").Key("RedisAddr").String()
-	RedisDb = file.Section("redis").Key("RedisDb").String()
-	RedisDbName = file.Section("redis").Key("RedisDbName").String()
-	RedisPw = file.Section("redis").Key("RedisPw").String()
+func LoadEs(file *ini.File) {
+	EsHost = file.Section("es").Key("EsHost").String()
+	EsPort = file.Section("es").Key("EsPort").String()
+	EsIndex = file.Section("es").Key("EsIndex").String()
+}
+
+func LoadPhotoPath(file *ini.File) {
+	Host = file.Section("path").Key("Host").String()
+	ProductPhotoPath = file.Section("path").Key("ProductPath").String()
+	AvatarPath = file.Section("path").Key("AvatarPath").String()
+}
+
+func LoadRabbitMQ(file *ini.File) {
+	RabbitMQ = file.Section("rabbitmq").Key("RabbitMQ").String()
+	RabbitMQUser = file.Section("rabbitmq").Key("RabbitMQUser").String()
+	RabbitMQPassWord = file.Section("rabbitmq").Key("RabbitMQPassWord").String()
+	RabbitMQHost = file.Section("rabbitmq").Key("RabbitMQHost").String()
+	RabbitMQPort = file.Section("rabbitmq").Key("RabbitMQPort").String()
 }

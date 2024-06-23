@@ -79,3 +79,40 @@ func (service *UserService) Register(ctx context.Context) serializer.Response {
 		Msg:    e.GetMsg(code),
 	}
 }
+
+func (service *UserService) Login(ctx context.Context) serializer.Response {
+	code := e.SUCCESS
+	userDao := dao.NewUserDao(ctx)
+	// 查看用户是否已注册
+	user, exist, err := userDao.ExistOrNotByUserName(service.UserName)
+	if err != nil {
+		code = e.ErrorDatabase
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	if !exist {
+		code = e.ErrorExistUser
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	token, err := utils.GenerateToken(user.ID, user.UserName, 0)
+	if err != nil {
+		code := e.ErrorAuthToken
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	return serializer.Response{
+		Status: code,
+		Msg:    e.GetMsg(code),
+		Data: serializer.TokenData{
+			User:  serializer.BuildUser(user),
+			Token: token,
+		},
+	}
+}
