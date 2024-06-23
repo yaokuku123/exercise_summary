@@ -18,11 +18,8 @@ func GetTodoList() ([]*models.Todo, error) {
 }
 
 func UpdateTodo(id int, todo *models.Todo) error {
-	// 必须传递已经存在地址的对象才可以
-	// 1.需要传指针，是因为框架要修改值
-	// 2.需要有地址而非声明，是因为框架需要对指定地址的数据修改，如果只是声明则框架无法找到修改位置
-	var db_todo = new(models.Todo)
-	dao.DB.Where("id = ?", id).First(db_todo)
+	var db_todo models.Todo
+	dao.DB.Where("id = ?", id).First(&db_todo)
 	db_todo.Status = todo.Status
 	return dao.DB.Save(db_todo).Error
 }
