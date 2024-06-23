@@ -93,7 +93,7 @@ func (service *UserService) Login(ctx context.Context) serializer.Response {
 		}
 	}
 	if !exist {
-		code = e.ErrorExistUser
+		code = e.ErrorNotExistAddress
 		return serializer.Response{
 			Status: code,
 			Msg:    e.GetMsg(code),
@@ -114,5 +114,34 @@ func (service *UserService) Login(ctx context.Context) serializer.Response {
 			User:  serializer.BuildUser(user),
 			Token: token,
 		},
+	}
+}
+
+func (service *UserService) UserUpdate(ctx context.Context, uId uint) serializer.Response {
+	code := e.SUCCESS
+	userDao := dao.NewUserDao(ctx)
+	user, err := userDao.GetUserById(uId)
+	if err != nil {
+		code = e.ErrorDatabase
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	if service.NickName != "" {
+		user.NickName = service.NickName
+	}
+	err = userDao.UpdateUserById(user.ID, user)
+	if err != nil {
+		code = e.ErrorDatabase
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	return serializer.Response{
+		Status: code,
+		Msg:    e.GetMsg(code),
+		Data:   serializer.BuildUser(user),
 	}
 }

@@ -19,6 +19,11 @@ func InitRouter() *gin.Engine {
 
 		v1.POST("user/register", api.UserRegisterHandler)
 		v1.POST("user/login", api.UserLoginHandler)
+		authed := v1.Group("/") // 需要登录token验证的
+		authed.Use(middleware.JWT())
+		{
+			authed.PUT("user", api.UserUpdate)
+		}
 	}
 	return r
 }
