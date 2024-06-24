@@ -82,3 +82,13 @@ func ShowMoney(c *gin.Context) {
 	res := moneyService.ShowMoney(c.Request.Context(), claims.ID)
 	c.JSON(http.StatusOK, res)
 }
+
+func ListCarousels(c *gin.Context) {
+	var carouselService service.CarouselService
+	if err := c.ShouldBind(&carouselService); err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+	res := carouselService.ListCarousels(c.Request.Context())
+	c.JSON(http.StatusOK, res)
+}

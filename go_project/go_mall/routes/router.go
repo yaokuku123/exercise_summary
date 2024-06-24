@@ -17,8 +17,11 @@ func InitRouter() *gin.Engine {
 			c.JSON(http.StatusOK, "success")
 		})
 
+		// 用户操作
 		v1.POST("user/register", api.UserRegisterHandler)
 		v1.POST("user/login", api.UserLoginHandler)
+		// 轮播图
+		v1.GET("carousels", api.ListCarousels)
 		authed := v1.Group("/") // 需要登录token验证的
 		authed.Use(middleware.JWT())
 		{
