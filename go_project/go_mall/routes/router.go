@@ -22,10 +22,14 @@ func InitRouter() *gin.Engine {
 		authed := v1.Group("/") // 需要登录token验证的
 		authed.Use(middleware.JWT())
 		{
+			// 用户操作
 			authed.PUT("user", api.UserUpdate)
 			authed.POST("avatar", api.AvatarUpdate)
 			authed.POST("user/sending-email", api.SendEmail)
 			authed.POST("user/valid-email/:emailToken", api.ValidEmail)
+
+			// 显示金额
+			authed.POST("money", api.ShowMoney)
 		}
 	}
 	return r

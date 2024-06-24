@@ -27,6 +27,10 @@ type UserEmailService struct {
 	OperationType uint   `form:"operation_type" json:"operation_type"` // OpertionType 1:绑定邮箱 2：解绑邮箱 3：改密码
 }
 
+type MoneyService struct {
+	Key string `form:"key" json:"key"`
+}
+
 func (service *UserService) Register(ctx context.Context) serializer.Response {
 	code := e.SUCCESS
 	// 校验密钥长度是否符合要求
@@ -281,5 +285,23 @@ func (service *UserEmailService) Valid(ctx context.Context, emailToken string) s
 		Status: code,
 		Msg:    e.GetMsg(code),
 		Data:   serializer.BuildUser(user),
+	}
+}
+
+func (service *MoneyService) ShowMoney(ctx context.Context, uId uint) serializer.Response {
+	code := e.SUCCESS
+	userDao := dao.NewUserDao(ctx)
+	user, err := userDao.GetUserById(uId)
+	if err != nil {
+		code = e.ErrorDatabase
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	return serializer.Response{
+		Status: code,
+		Msg:    e.GetMsg(code),
+		Data:   serializer.BuildMoney(user, service.Key),
 	}
 }
