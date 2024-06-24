@@ -60,3 +60,14 @@ func SendEmail(c *gin.Context) {
 	res := userEmailService.Send(c.Request.Context(), claims.ID)
 	c.JSON(http.StatusOK, res)
 }
+
+func ValidEmail(c *gin.Context) {
+	var userEmailService service.UserEmailService
+	if err := c.ShouldBind(&userEmailService); err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+	emailToken := c.Param("emailToken")
+	res := userEmailService.Valid(c.Request.Context(), emailToken)
+	c.JSON(http.StatusOK, res)
+}

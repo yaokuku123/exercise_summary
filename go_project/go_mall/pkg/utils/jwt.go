@@ -71,3 +71,18 @@ func EmailGenerateToken(uId, operationType uint, email, password string) (tokenS
 	tokenString, err = token.SignedString(jwtSecret)
 	return tokenString, err
 }
+
+func ParseEmailToken(token string) (*EmailClaims, error) {
+	tokenClaims, err := jwt.ParseWithClaims(token, &EmailClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return jwtSecret, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if tokenClaims != nil {
+		if claims, ok := tokenClaims.Claims.(*EmailClaims); ok && tokenClaims.Valid {
+			return claims, nil
+		}
+	}
+	return nil, err
+}

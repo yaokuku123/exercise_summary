@@ -25,6 +25,7 @@ func InitRouter() *gin.Engine {
 			authed.PUT("user", api.UserUpdate)
 			authed.POST("avatar", api.AvatarUpdate)
 			authed.POST("user/sending-email", api.SendEmail)
+			authed.POST("user/valid-email/:emailToken", api.ValidEmail)
 		}
 	}
 	return r

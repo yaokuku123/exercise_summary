@@ -234,3 +234,52 @@ func (service *UserEmailService) Send(ctx context.Context, uId uint) serializer.
 		Msg:    e.GetMsg(code),
 	}
 }
+
+func (service *UserEmailService) Valid(ctx context.Context, emailToken string) serializer.Response {
+	code := e.SUCCESS
+	token, err := utils.ParseEmailToken(emailToken)
+	if err != nil {
+		code = e.ErrorAuthToken
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	userDao := dao.NewUserDao(ctx)
+	user, err := userDao.GetUserById(token.UserID)
+	if err != nil {
+		code = e.ErrorDatabase
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	switch token.OperationType {
+	case 1: // 修改邮箱
+		user.Email = token.Email
+	case 2: // 解绑邮箱
+		user.Email = " "
+	case 3: // 修改密码
+		err := user.SetPassword(token.Password)
+		if err != nil {
+			code = e.ERROR
+			return serializer.Response{
+				Status: code,
+				Msg:    e.GetMsg(code),
+			}
+		}
+	}
+	err = userDao.UpdateUserById(user.ID, user)
+	if err != nil {
+		code = e.ErrorDatabase
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	return serializer.Response{
+		Status: code,
+		Msg:    e.GetMsg(code),
+		Data:   serializer.BuildUser(user),
+	}
+}
