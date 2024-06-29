@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>渲染柱形图</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .box {
+            display: flex;
+            width: 700px;
+            height: 300px;
+            margin: 50px auto;
+            border-left: 1px solid pink;
+            border-bottom: 1px solid pink;
+            justify-content: space-around;
+            align-items: flex-end;
+            text-align: center;
+        }
+        .box>div{
+            display: flex;
+            width: 50px;
+            background-color: pink;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .box div span {
+            margin-top: -20px;
+        }
+        .box div h4 {
+            width: 70px;
+            margin-bottom: -30px;
+            margin-left: -10px;
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        let arr = []
+        for (let i = 0; i < 4; i++) {
+            arr[i] = prompt("请输入高度：")
+        }
+        // 头部
+        document.write(`<div class="box">`)
+        // 中间
+        for (let i = 0; i < arr.length; i++) {
+            document.write(`
+                <div style="height: ${arr[i]}px">
+                    <span>${arr[i]}</span>
+                    <h4>第${i + 1}季度</h4>
+                </div>
+            `)
+        }
+        // 尾部
+        document.write(`</div>`)
+    </script>
+</body>
+</html>
