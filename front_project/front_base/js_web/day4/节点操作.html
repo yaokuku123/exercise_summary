@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+</ul>
+<script>
+    const ul = document.querySelector('ul')
+    // 获取子元素节点
+    console.log(ul.children)
+    const li2 = document.querySelector('ul li:nth-child(2)')
+    // 获取父元素节点
+    console.log(li2.parentNode)
+    // 获取上一个兄弟节点
+    console.log(li2.previousElementSibling)
+    // 获取下一个兄弟节点
+    console.log(li2.nextElementSibling)
+
+    // 创建节点
+    const li_after = document.createElement("li")
+    const li_before = document.createElement("li")
+    li_after.innerHTML = 'next node'
+    li_before.innerHTML = 'before node'
+    // 追加节点
+    ul.appendChild(li_after)
+    // 在某个子节点前插入节点
+    ul.insertBefore(li_before, ul.children[0])
+
+    // 克隆节点
+    const li_clone = ul.children[1].cloneNode(true) // true表示深克隆
+    ul.appendChild(li_clone)
+
+    // 删除节点
+    ul.removeChild(ul.children[1]) // 把1节点从dom中删除，不同于display:none;
+</script>
+
+</body>
+</html>

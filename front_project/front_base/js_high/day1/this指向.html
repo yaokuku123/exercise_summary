@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button>确定</button>
+<script>
+    // script作用域 this指向window
+    console.log(this) // window
+    // 函数的this指向window
+    function fun() {
+        console.log(this) // window
+    }
+
+    fun()
+    // 对象的方法this指向当前对象
+    const obj = {
+        name: 'yorick',
+        sayHi: function () {
+            console.log(this) // obj
+        }
+    }
+    obj.sayHi()
+    // 事件回调this指向当前添加事件的对象
+    const btn = document.querySelector('button')
+    btn.addEventListener('click', function () {
+        console.log(this) // button
+    })
+
+    // 箭头函数
+    // 箭头函数不会创建自己的this，它只会从自己的作用链上一层沿用this
+    // dom的回调函数不推荐使用箭头函数，因为事件回调使用箭头函数时，this指向window
+    // 普通的声明箭头函数，this指向window
+    const fun2 = () => console.log(this) // window
+    fun2()
+    // 对象中声明的箭头方法this指向window
+    // 对象中声明函数的里面再声明箭头函数，则this指向当前对象
+    const obj2 = {
+        name: "tom",
+        sayHi: () => console.log(this), // window
+        sayHello: function () {
+            let i = 0
+            const inner = () => console.log(this) // obj2
+            inner()
+        }
+    }
+    obj2.sayHi()
+    obj2.sayHello()
+
+    // dom事件回调和对象类似，直接箭头函数回调this指向window，在普通函数回调里面再写个箭头函数则this指向事件对象本身
+
+</script>
+</body>
+</html>

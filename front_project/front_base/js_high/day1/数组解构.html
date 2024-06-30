@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    // 数组解构
+    const [a, b, c] = [1, 2, 3]
+    console.log(a, b, c)
+
+    // 解构数组的变量交互
+    let num1 = 10, num2 = 20; //以数组[]开头时，前面的语句必须加分号
+    [num2, num1] = [num1, num2]
+    console.log(num1, num2)
+
+    // 变量多，数值少
+    const [aa, bb, cc = 0] = [1, 2]
+    console.log(aa, bb, cc) // cc:undefined，可以设置默认值，默认为0
+
+    // 变量少，数值多，使用剩余参数接收
+    const [aaa, bbb, ...args] = [1, 2, 3, 4]
+    console.log(aaa, bbb, args)
+
+    // 按需解构
+    const [aaaa, bbbb, , dddd] = [1, 2, 3, 4]
+    console.log(aaaa, bbbb, dddd) // 1,2,4
+
+    // 多维数组解构
+    const [x, y, [k, z]] = [1, 2, [3, 4]]
+    console.log(x, y, k, z)
+</script>
+</body>
+</html>

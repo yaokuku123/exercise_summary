@@ -75,6 +75,14 @@
     // 删除指定元素
     console.log(arr.splice(2, 3)); // [10, 11, 12]
     console.log(arr) // [8, 9, 13, 14, 15]
+    // 数组映射
+    const newArr = arr.map(function(ele,index) {
+        console.log(`index:${index}, ele:${ele}`)
+        return ele * ele
+    })
+    console.log(`newArr: ${newArr}`)
+    // 数组拼接
+    console.log(arr.join(','))
     // 使用函数计算数组的和
     // 函数没有return 默认返回 undefined
     function getArrSum(arr = []) {

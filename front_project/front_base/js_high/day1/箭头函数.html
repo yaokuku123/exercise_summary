@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    // 普通箭头函数
+    const fun1 = (a, b) => {
+        return a + b
+    }
+    console.log(fun1(1, 2));
+    // 省略形参小括号
+    const fun2 = a => {
+        console.log(a)
+    }
+    fun2('hello world')
+    // 只有一行代码可以省略大括号
+    const fun3 = a => console.log(a)
+    fun3('hello js')
+    // 只有一行代码可以省略大括号，并且不用写return 结果作为返回值
+    const fun4 = (a, b) => a + b
+    console.log(fun4(10, 20));
+    // 箭头函数也有剩余参数
+    const fun5 = (a, b, ...args) => {
+        let sum = a + b
+        for (let i = 0; i < args.length; i++) {
+            sum += args[i]
+        }
+        return sum
+    }
+    console.log(fun5(1, 2, 3, 4, 5));
+    // 箭头函数可以直接返回对象，但是要用小括号包裹
+    const fun6 = (uname) => ({uname: uname})
+    console.log(fun6('yorick'))
+    // 对象结构
+    const fun7 = (uname) => ({uname})
+    console.log(fun7('tom'))
+</script>
+
+
+</body>
+</html>
