@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+    function User(name, age) {
+        this.name = name // 实例属性
+        this.age = age
+        this.sayHi = () => console.log(this.name + ' sayHi') // 实例方法，最特殊的情况，其他情况下一层的箭头函数都是window
+    }
+
+    User.eyes = 2 // 静态属性
+    User.eat = () => console.log('User eat') // 静态方法
+
+    const user = new User('yorick', 25)
+    console.log(user.name, user.age)
+    user.sayHi()
+    console.log(User.eyes)
+    User.eat()
+</script>
+
+</body>
+</html>

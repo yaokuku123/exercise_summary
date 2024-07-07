@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    // Set
+    let set = new Set() // 定义set
+    // 添加元素
+    set.add(1)
+    set.add(2)
+    set.add(3)
+    set.add(3)
+    console.log(set.has(2)) // 判断是否有某个元素
+    console.log(set.size) // 集合大小
+    set.delete(1) // 删除某个元素
+    console.log(set.size)
+    console.log(set)
+
+    // Map
+    let map = new Map([['age', 25], ['address', 'bj']]) // 定义并初始化map
+    map.set('name', 'yorick') // 添加键值对
+    console.log(map.get('name')) // 获取某个键
+    console.log(map.has('name')) // 判断是否有某个键
+    map.delete('name') // 删除某个键
+    console.log(map.has('name'))
+    console.log(map)
+
+    // class
+    class Person {
+        constructor(name, age) { // 构造方法
+            this.name = name
+            this.age = age
+        }
+
+        sayName() { // 在原型对象上添加方法
+            return this.name
+        }
+
+        sayAge() { // 在原型对象上添加方法
+            return this.age
+        }
+    }
+
+    let p = new Person('yorick', 26)
+    console.log(p.sayName());
+    console.log(p.sayAge());
+    console.log(p)
+</script>
+</body>
+</html>

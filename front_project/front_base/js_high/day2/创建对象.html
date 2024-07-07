@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+    // 1.字面量创建对象实例
+    const obj1 = {
+        name: 'yorick',
+        age: 25
+    }
+    console.log(obj1)
+
+    // 2.new Object()方式创建对象实例
+    const obj2 = new Object({name: 'yorick2', age: 26})
+    console.log(obj2)
+
+    // 3.自定义构造函数的方式实例化对象
+    // 实例化过程：
+    // 1.new 先创建一个空对象
+    // 2.this指向这个空对象
+    // 3.通过构造函数给this的属性赋值
+    // 4.返回新的实例化对象
+    function User(name, age) {
+        this.name = name
+        this.age = age
+        this.sayHi = () => console.log('sayHello:', this) // 这里的箭头方法中this也是指向当前的实例对象
+    }
+
+    const user = new User('yorick3', 27)
+    console.log(user)
+    user.sayHi()
+</script>
+</body>
+</html>
